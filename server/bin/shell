@@ -1,0 +1,12 @@
+cd "./../blog"
+echo `date "+%Y-%m-%d %H:%M:%S"` "开始发布到github"
+echo `date "+%Y-%m-%d %H:%M:%S"` "hexo clean start"
+hexo clean
+echo `date "+%Y-%m-%d %H:%M:%S"` "hexo clean end"
+echo `date "+%Y-%m-%d %H:%M:%S"` "hexo generate start"
+hexo generate
+echo `date "+%Y-%m-%d %H:%M:%S"` "hexo generate end"
+echo `date "+%Y-%m-%d %H:%M:%S"` "hexo deploy start"
+hexo deploy
+echo `date "+%Y-%m-%d %H:%M:%S"` "hexo deploy end"
+echo `date "+%Y-%m-%d %H:%M:%S"` "发布成功"
