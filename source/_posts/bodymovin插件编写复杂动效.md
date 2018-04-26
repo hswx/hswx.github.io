@@ -1,4 +1,4 @@
----
+﻿---
 title: bodymovin(Lottie)插件编写跨平台复杂动效
 date: 2018-04-23 22:30:49
 tags: ["bodymovin","动效"]
@@ -64,3 +64,6 @@ bodymovin最后给出的就是如下的一串json文件，在动画生成实际�
                 root.bodymovin = root.lottie;
             }
         }((window || {}), function(window) {
+
+
+![bodymovin](/hswxBlog/images/bodymovin.gif)
