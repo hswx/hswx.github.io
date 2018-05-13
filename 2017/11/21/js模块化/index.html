@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/hswxBlog/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/hswxBlog/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/hswxBlog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/hswxBlog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/hswxBlog/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/hswxBlog/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/hswxBlog/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/hswxBlog/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/hswxBlog/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="打包,模块化,CMD,AMD,CommonJS,webpack,browserify,requireJs,seajs," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="1 为什么要模块化看个具体例子吧，有三个js文件分别是util.js，a-util.js，a.js： //util.js function getFormatString(word,type) {     if(type===1){         return word+&amp;quot;1&amp;quot;;     }     if(type===2){         return word+&amp;quo">
+<meta name="keywords" content="打包,模块化,CMD,AMD,CommonJS,webpack,browserify,requireJs,seajs">
+<meta property="og:type" content="article">
+<meta property="og:title" content="js模块化">
+<meta property="og:url" content="https://hswx.github.io/hswxBlog/2017/11/21/js模块化/index.html">
+<meta property="og:site_name" content="寒山问雪">
+<meta property="og:description" content="1 为什么要模块化看个具体例子吧，有三个js文件分别是util.js，a-util.js，a.js： //util.js function getFormatString(word,type) {     if(type===1){         return word+&amp;quot;1&amp;quot;;     }     if(type===2){         return word+&amp;quo">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://pic4.zhimg.com/v2-ae9253e557d902369b1beaed998061cb_r.jpg">
+<meta property="og:updated_time" content="2018-05-13T13:25:41.433Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="js模块化">
+<meta name="twitter:description" content="1 为什么要模块化看个具体例子吧，有三个js文件分别是util.js，a-util.js，a.js： //util.js function getFormatString(word,type) {     if(type===1){         return word+&amp;quot;1&amp;quot;;     }     if(type===2){         return word+&amp;quo">
+<meta name="twitter:image" content="https://pic4.zhimg.com/v2-ae9253e557d902369b1beaed998061cb_r.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/hswxBlog/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '寒山问雪'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hswx.github.io/hswxBlog/2017/11/21/js模块化/"/>
+
+
+
+
+
+  <title>js模块化 | 寒山问雪</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/hswxBlog/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">寒山问雪</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/hswxBlog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/hswxBlog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/hswxBlog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://hswx.github.io/hswxBlog/hswxBlog/2017/11/21/js模块化/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="寒山问雪">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/hswxBlog/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="寒山问雪">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">js模块化</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-21T17:00:14+08:00">
+                2017-11-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  723
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  3
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="1-为什么要模块化"><a href="#1-为什么要模块化" class="headerlink" title="1 为什么要模块化"></a>1 为什么要模块化</h1><p>看个具体例子吧，有三个js文件分别是util.js，a-util.js，a.js：</p>
+<pre><code>//util.js
+function getFormatString(word,type) {
+    if(type===1){
+        return word+&quot;1&quot;;
+    }
+    if(type===2){
+        return word+&quot;2&quot;;
+    }
+}
+
+//a-util.js
+function aGetFormatDate(word) {
+    return getFormatString(word,2);
+}
+
+//a.js
+var word=&quot;hello&quot;;
+console.log(aGetFormatDate(word));
+</code></pre><p>其中a.js的执行依赖于a-util.js，a-util.js的执行依赖于util.js。按照这样的依赖顺序，页面使用的时候必须这样写：</p>
+<pre><code>&lt;script src=&quot;util.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;a-util.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;a.js&quot;&gt;&lt;/script&gt;
+</code></pre><p>这样的写法暴露出了很多的问题：</p>
+<p>1.这些代码中的函数必须是全局变量才能暴露给使用方，造成了全局污染。</p>
+<p>2.加载的时候，浏览器会停止网页渲染，加载文件越多，网页失去响应的时间就会越长。</p>
+<p>3.js文件之间存在依赖关系，因此必须严格保证加载顺序，当依赖关系很复杂的时候，代码的编写和维护都会变得困难。</p>
+<p>这样我们就需要对各个文件进行模块化的处理，管理各个文件模块之间的依赖，按需异步加载相关的js文件，这样才能避免网页失去响应，方便代码的编写与维护。</p>
+<h1 id="2-CMD、AMD、CommonJS"><a href="#2-CMD、AMD、CommonJS" class="headerlink" title="2 CMD、AMD、CommonJS"></a>2 CMD、AMD、CommonJS</h1><h2 id="CommonJS"><a href="#CommonJS" class="headerlink" title="CommonJS"></a>CommonJS</h2><p>CommonJS规范主要用于服务端。CommonJS中，有一个全局性方法require()，用于加载模块。</p>
+<p>CommonJS定义的模块分为:{模块引用(require)} {模块定义(exports)} {模块标识(module)}</p>
+<p>require()用来引入外部模块；exports对象用于导出当前模块的方法或变量，唯一的导出口；module对象就代表模块本身。浏览器不兼容CommonJS的根本原因，就在于缺少require,exports,module以及global这四个Node.js环境的变量。</p>
+<h2 id="CMD和AMD"><a href="#CMD和AMD" class="headerlink" title="CMD和AMD"></a>CMD和AMD</h2><p>CMD(Common Module Definition，<a href="https://github.com/seajs/seajs/issues/242" target="_blank" rel="noopener">CMD 模块定义规范</a>)和AMD(Asynchronous Module Definition，<a href="https://github.com/amdjs/amdjs-api/wiki/AMD-(%E4%B8%AD%E6%96%87%E7%89%88" target="_blank" rel="noopener">AMD (中文版)</a>))都是前端的异步加载机制。</p>
+<p>seajs应用了CMD规范，依赖就近，用的时候再require。需要使用把模块变为字符串解析一遍才知道依赖了那些模块，牺牲性能来带来开发的便利性。</p>
+<pre><code>define(function(require, exports, module) {
+   var clock = require(&apos;clock&apos;);
+   clock.start();
+});
+</code></pre><p>requireJs应用了AMD规范。先定义所有依赖，然后在加载完成后的回调函数中执行。js可以方便知道依赖模块是谁，立即加载。</p>
+<pre><code>require([&apos;clock&apos;],function(clock){
+  clock.start();
+});
+</code></pre><h2 id="webpack和browserify"><a href="#webpack和browserify" class="headerlink" title="webpack和browserify"></a>webpack和browserify</h2><p>webpack和browserify属于前端模块化打包工具。seajs和requirejs会在页面上加载一个CMD/AMD解释器，使得浏览器在线加载模块以实现模块化。而webpack和browserify属于预编译方案，不需要浏览器加载解释器，webpack和browserify会在本地编译各个风格的模块化js，编译成浏览器能够执行的js文件。<br><img src="https://pic4.zhimg.com/v2-ae9253e557d902369b1beaed998061cb_r.jpg" alt=""></p>
+<blockquote>
+<p>参考：<a href="http://www.jianshu.com/p/09ffac7a3b2c" target="_blank" rel="noopener">浅析模块化规范</a>，<a href="https://www.zhihu.com/question/37020798" target="_blank" rel="noopener">Webpack、Browserify和Gulp三者之间到底是怎样的关系</a></p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/hswxBlog/tags/打包/" rel="tag"># 打包</a>
+          
+            <a href="/hswxBlog/tags/模块化/" rel="tag"># 模块化</a>
+          
+            <a href="/hswxBlog/tags/CMD/" rel="tag"># CMD</a>
+          
+            <a href="/hswxBlog/tags/AMD/" rel="tag"># AMD</a>
+          
+            <a href="/hswxBlog/tags/CommonJS/" rel="tag"># CommonJS</a>
+          
+            <a href="/hswxBlog/tags/webpack/" rel="tag"># webpack</a>
+          
+            <a href="/hswxBlog/tags/browserify/" rel="tag"># browserify</a>
+          
+            <a href="/hswxBlog/tags/requireJs/" rel="tag"># requireJs</a>
+          
+            <a href="/hswxBlog/tags/seajs/" rel="tag"># seajs</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/hswxBlog/2017/11/17/相对定位-绝对定位居中/" rel="next" title="css居中">
+                <i class="fa fa-chevron-left"></i> css居中
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/hswxBlog/2017/11/27/浅拷贝和深拷贝/" rel="prev" title="浅拷贝和深拷贝">
+                浅拷贝和深拷贝 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/hswxBlog/images/avatar.gif"
+                alt="寒山问雪" />
+            
+              <p class="site-author-name" itemprop="name">寒山问雪</p>
+              <p class="site-description motion-element" itemprop="description">html,css,javascript,angular,vue,react,node,各种前端水文</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/hswxBlog/archives/">
+              
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/hswxBlog/tags/index.html">
+                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-为什么要模块化"><span class="nav-number">1.</span> <span class="nav-text">1 为什么要模块化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-CMD、AMD、CommonJS"><span class="nav-number">2.</span> <span class="nav-text">2 CMD、AMD、CommonJS</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CommonJS"><span class="nav-number">2.1.</span> <span class="nav-text">CommonJS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CMD和AMD"><span class="nav-number">2.2.</span> <span class="nav-text">CMD和AMD</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#webpack和browserify"><span class="nav-number">2.3.</span> <span class="nav-text">webpack和browserify</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">寒山问雪 QQ: 597084762</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/hswxBlog/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/hswxBlog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/hswxBlog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/hswxBlog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/hswxBlog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/hswxBlog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/hswxBlog/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/hswxBlog/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/hswxBlog/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/hswxBlog/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/hswxBlog/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/hswxBlog/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/hswxBlog/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+<script src="/hswxBlog/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/hswxBlog/live2dw/assets/miku.model.json"},"display":{"superSample":2,"width":100,"height":200,"position":"left","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.3},"react":{"opacityDefault":0.8,"opacityOnHover":0.6}});</script></body>
+</html>

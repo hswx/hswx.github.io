@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title><![CDATA[vue-cli中webpack配置解析]]></title>
+    <url>%2FhswxBlog%2F2018%2F05%2F13%2Fvue-cli%E4%B8%ADwebpack%E9%85%8D%E7%BD%AE%E8%A7%A3%E6%9E%90%2F</url>
+    <content type="text"></content>
+  </entry>
+  <entry>
+    <title><![CDATA[bodymovin(Lottie)插件编写跨平台复杂动效]]></title>
+    <url>%2FhswxBlog%2F2018%2F04%2F23%2Fbodymovin%E6%8F%92%E4%BB%B6%E7%BC%96%E5%86%99%E5%A4%8D%E6%9D%82%E5%8A%A8%E6%95%88%2F</url>
+    <content type="text"><![CDATA[你还在为各种复杂动画头疼么，设计师想出了一个非常炫酷的动效，可是对程序员来说是很痛苦的，就web前端来说可能要写一堆的css和js才能完成这个动效，写出来的可能还是个bug。 最近发现一个动画插件bodymovin(Lottie)。首先在AE上做好的动画并导出为json文件，通过bodymovin可以将json数据在web(bodymovin.js)/ios(lottie-ios)/安卓(lottie-android)上渲染出AE中做好的动画，实现跨平台三端通用，支持渲染成svg/canvas/html三种格式。甚至对我们前端来说，有专门用于react框架的插件lottie-react-native。 bodymovin最后给出的就是如下的一串json文件，在动画生成实际的json文件之后，可以自行更改。这里展示的是资源是图片的情况下生成的json文件 { &quot;v&quot;: &quot;4.6.9&quot;, // bodymovin版本号 &quot;fr&quot;: 25, &quot;ip&quot;: 0, &quot;op&quot;: 125, &quot;w&quot;: 984, // 动画宽度 &quot;h&quot;: 560, // 动画高度 &quot;nm&quot;: &quot;anim&quot;, // 动画名称 &quot;ddd&quot;: 0, &quot;assets&quot;: [ // 静态资源数组 { &quot;id&quot;: &quot;image_0&quot;, // 静态资源id &quot;w&quot;: 168, // 静态资源宽度 &quot;h&quot;: 194, // 静态资源高度 &quot;u&quot;: &quot;images/&quot;, // 静态资源所在目录 &quot;p&quot;: &quot;img_0.png&quot; // 静态资源文件名 } ... ] &quot;layers&quot;:[ ... ] // 动画数据 关于AE生成json文件的方法，这里不做赘述，那是设计师的事儿，感兴趣的可以看官方教程，还有中文版教程1，教程2 安装从github中build/player/目录下获取最新版本lottie.js文件。当然，也可以使用npm或者bower等工具进行下载 npm install lottie-web 或 bower install lottie-web 引入可以直接通过script标签引入js文件 &lt;script src=&quot;js/lottie.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt; 当然，从lottie的源码来看，也是可以通过import等模块化引入方式进行引入的。源码中还有一点，在全局引入的方式中，将全局变量lottie赋值给了bodymovin，因此全局既可以用lottie，也可以用bodymovin。原本插件叫bodymovin，后来改成了lottie。 (typeof navigator !== &quot;undefined&quot;) &amp;&amp; (function(root, factory) { if (typeof define === &quot;function&quot; &amp;&amp; define.amd) { define(function() { return factory(root); }); } else if (typeof module === &quot;object&quot; &amp;&amp; module.exports) { module.exports = factory(root); } else { root.lottie = factory(root); root.bodymovin = root.lottie; } }((window || {}), function(window) { 初始化let animationInstance = bodymovin.loadAnimation(options) options对象可以放入以下参数： 参数 类型 备注 name String 动画名称，用于后续的使用 container Object 渲染动画的dom元素对象 renderer String 动画的渲染方式，可以是svg/html/canvas loop Boolean/Integer 循环播放的次数，可以是false（不循环）/true（无限循环）/n（n为正整数，表示循环n次） autoplay Boolean 加载完是否自动播放 animationData Object 动画数据对象（该属性与path只能用其中一个） path String 动画数据文件的相对路径，使用该属性的时候，需要在服务器环境运行，推荐使用http-server demo示例请点击此处下载 实例方法初始化之后会得到一个动画实例 animationInstance ，该实例可以使用以下方法： play() // 播放动画。stop() // 停止动画（下次播放从头开始）。pause() // 暂停动画（下次播放从当前暂停处开始）。setSpeed(speed) // 设置动画播放的速度，1为正常速度。goToAndStop(value, isFrame) // 跳转到某一时间（或帧）后暂停。value表示跳转到的点，类型是数值。isFrame类型为Boolean，true表示跳转到某帧，false表示跳转到某个时间。goToAndPlay(value, isFrame) // 跳转到某一时间（或帧）后播放。参数同上。setDirection(direction) // 播放的矢量方向，&gt;=0表示正向播放，&lt;0表示倒序播放。playSegments(segments, forceFlag) // 播放某一段。segments类型是数组，形式为[(a,b),(c,d),(e,f)…]，表示播放第a帧到b帧，然后第c帧到d帧，依此类推。forceFlag为第二个参数为Boolean类型，表示是否立即播放本段动画还是等待当前动画播放完毕。destroy() // 销毁动画实例。 全局方法bodymovin对象也有以下几个方法可以使用： bodymovin.play(name) // 播放name名称的动画。bodymovin.stop(name) // 停止name名称的动画。bodymovin.setSpeed(speed, name) // 设置名称为name的动画的速度，name可不填，1为正常速度。bodymovin.setDirection(direction， name) // 称为name的动画播放的矢量方向，name可不填，&gt;=0表示正向播放，&lt;0表示倒序播放。bodymovin.searchAnimations() // 查找class值为”bodymovin”的dom元素。bodymovin.loadAnimation() // 初始化一个动画实例。参数见用法。bodymovin.destroy() // 销毁所有动画实例bodymovin.registerAnimation() // 注册一个自定义元素，它必须包含”data-animation-path”属性并指向data.json的地址。bodymovin.setQuality() // 画质设置，默认为高画质(high), 可选值为’high’、’medium’、’low’, 或者大于1的数字。对于有的动画这些设置差别不大。 事件监听bodymovin可以监听以下事件，或者可以直接用addEventListener监听事件(complete/loopComplete/enterFrame/segmentStart)： onComplete // 动画播放完成onLoopComplete // 每个动画循环播放完成onEnterFrame // 进入某一帧前触发onSegmentStart // 某个播放片段开始前触发]]></content>
+      <tags>
+        <tag>bodymovin</tag>
+        <tag>动效</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[浅拷贝和深拷贝]]></title>
+    <url>%2FhswxBlog%2F2017%2F11%2F27%2F%E6%B5%85%E6%8B%B7%E8%B4%9D%E5%92%8C%E6%B7%B1%E6%8B%B7%E8%B4%9D%2F</url>
+    <content type="text"><![CDATA[为什么要进行浅/深拷贝JavaScript语言中，数据的类型有两种，一种是值类型，保存在栈中，一种是引用类型，保存在堆中。值类型保存和传递的是变量的值，而引用类型保存和传递的是变量的引用，传递之后的变量和传递之前的变量引用的是同一块内存保存的数据，就会产生下面的情况。当我们修改某一引用类型的变量时候，指向这块内存的所有的变量的值都会改变。 var m={a:1}; var n=m; n.a=2; console.log(m.a); // 2 浅/深拷贝的区别对于基本数据类型/值类型（string、number、boolean、undefined、null），浅复制是对值的复制。对于复杂数据类型/引用类型object来说，浅复制是对对象地址的复制，并没有开辟新的栈，也就是复制的结果是两个对象指向同一个地址，修改其中一个对象的属性，则另一个对象的属性也会改变，而深复制则是开辟新的栈，两个对象对应两个不同的地址，修改一个对象的属性，不会改变另一个对象的属性。 浅拷贝的实现浅复制只复制一层对象的属性，要注意的是，这里通过for…in的方式获取第一层属性，有可能拿到对象可枚举的原型属性，通过Object.hasOwnProperty()来判断是否是对象自身的属性。当然，也可以通过Object.keys()获取对象自身的属性来遍历。 function shallowCopy(obj) { var result = {}; for (let key in obj) { if (obj.hasOwnProperty(key)) { result[key] = obj[key]; } } return result; } 深拷贝的实现深拷贝需要开辟新的地址，把被复制对象的所有层级都复制过来，目前深复制通常有两种方式，第一种借用JSON.stringify和JSON.parse来做： JSON.parse( JSON.stringify(obj)) 这种方式在一些简单的应用场景中比较方便，但是存在一些问题，比如当对象中存在引用自身的情况，var obj={a:1,b:obj}，JSON的转换会报错，JSON无法转换Regx function deepCopy(obj, finalRes) { var res = finalRes || {}; for (var i in obj) { var prop = obj[i]; if(prop === res) { // 这里防止obj对象中的属性值也是obj导致死循环 continue; } if (typeof prop === &apos;object&apos;) { res[i] = (prop.constructor === Array) ? [] : {}; deepCopy(prop, res[i]); } else { // prop是基本类型或者是function的情况下 res[i] = prop; } } return res; }]]></content>
+      <tags>
+        <tag>浅拷贝</tag>
+        <tag>深拷贝</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[js模块化]]></title>
+    <url>%2FhswxBlog%2F2017%2F11%2F21%2Fjs%E6%A8%A1%E5%9D%97%E5%8C%96%2F</url>
+    <content type="text"><![CDATA[1 为什么要模块化看个具体例子吧，有三个js文件分别是util.js，a-util.js，a.js： //util.js function getFormatString(word,type) { if(type===1){ return word+&quot;1&quot;; } if(type===2){ return word+&quot;2&quot;; } } //a-util.js function aGetFormatDate(word) { return getFormatString(word,2); } //a.js var word=&quot;hello&quot;; console.log(aGetFormatDate(word)); 其中a.js的执行依赖于a-util.js，a-util.js的执行依赖于util.js。按照这样的依赖顺序，页面使用的时候必须这样写： &lt;script src=&quot;util.js&quot;&gt;&lt;/script&gt; &lt;script src=&quot;a-util.js&quot;&gt;&lt;/script&gt; &lt;script src=&quot;a.js&quot;&gt;&lt;/script&gt; 这样的写法暴露出了很多的问题： 1.这些代码中的函数必须是全局变量才能暴露给使用方，造成了全局污染。 2.加载的时候，浏览器会停止网页渲染，加载文件越多，网页失去响应的时间就会越长。 3.js文件之间存在依赖关系，因此必须严格保证加载顺序，当依赖关系很复杂的时候，代码的编写和维护都会变得困难。 这样我们就需要对各个文件进行模块化的处理，管理各个文件模块之间的依赖，按需异步加载相关的js文件，这样才能避免网页失去响应，方便代码的编写与维护。 2 CMD、AMD、CommonJSCommonJSCommonJS规范主要用于服务端。CommonJS中，有一个全局性方法require()，用于加载模块。 CommonJS定义的模块分为:{模块引用(require)} {模块定义(exports)} {模块标识(module)} require()用来引入外部模块；exports对象用于导出当前模块的方法或变量，唯一的导出口；module对象就代表模块本身。浏览器不兼容CommonJS的根本原因，就在于缺少require,exports,module以及global这四个Node.js环境的变量。 CMD和AMDCMD(Common Module Definition，CMD 模块定义规范)和AMD(Asynchronous Module Definition，AMD (中文版)))都是前端的异步加载机制。 seajs应用了CMD规范，依赖就近，用的时候再require。需要使用把模块变为字符串解析一遍才知道依赖了那些模块，牺牲性能来带来开发的便利性。 define(function(require, exports, module) { var clock = require(&apos;clock&apos;); clock.start(); }); requireJs应用了AMD规范。先定义所有依赖，然后在加载完成后的回调函数中执行。js可以方便知道依赖模块是谁，立即加载。 require([&apos;clock&apos;],function(clock){ clock.start(); }); webpack和browserifywebpack和browserify属于前端模块化打包工具。seajs和requirejs会在页面上加载一个CMD/AMD解释器，使得浏览器在线加载模块以实现模块化。而webpack和browserify属于预编译方案，不需要浏览器加载解释器，webpack和browserify会在本地编译各个风格的模块化js，编译成浏览器能够执行的js文件。 参考：浅析模块化规范，Webpack、Browserify和Gulp三者之间到底是怎样的关系]]></content>
+      <tags>
+        <tag>打包</tag>
+        <tag>模块化</tag>
+        <tag>CMD</tag>
+        <tag>AMD</tag>
+        <tag>CommonJS</tag>
+        <tag>webpack</tag>
+        <tag>browserify</tag>
+        <tag>requireJs</tag>
+        <tag>seajs</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[css居中]]></title>
+    <url>%2FhswxBlog%2F2017%2F11%2F17%2F%E7%9B%B8%E5%AF%B9%E5%AE%9A%E4%BD%8D-%E7%BB%9D%E5%AF%B9%E5%AE%9A%E4%BD%8D%E5%B1%85%E4%B8%AD%2F</url>
+    <content type="text"><![CDATA[1 css定位属性position static 默认。位置设置为 static 的元素，它始终会处于页面流给予的位置（static 元素会忽略任何 top、bottom、left 或 right 声明）。 relative 位置被设置为 relative 的元素，可将其移至相对于其正常位置的地方，元素仍保持其未定位前的形状，它原本所占的空间仍保留。即元素设置的margin、border、padding、height等属性仍会对原本占有的空间产生影响。 absolute 位置设置为 absolute 的元素，绝对定位的元素的位置相对于最近的已定位祖先元素，如果元素没有已定位的祖先元素，那么它的位置相对于最初的包含块，注意position:static的元素属于未定位元素。absolute下，元素不占据原来的空间，元素的变化对原来的空间不产生影响，就好像元素不存在一样。 fixed 位置被设置为 fixed 的元素，实质上也是absolute定位，只不过位置相对于浏览器窗口进行定位。 2 各种居中2.1 text-align:center用于行内元素的居中，比如span、button等，或者display设置了inline或者inline-block的元素。 2.2 margin:0 auto用于元素水平居中，但对浮动元素和绝对定位元素无效。 2.3 flex+justify-content采用flex布局，设置父容器的display为flex，采用jsutify-content设置容器中项目的对齐方式。 display: flex; justify-content: center; 2.4 绝对定位元素的居中2.4.1 CSS3 transform该方法首先通过绝对定位，是元素距已定位祖先元素左边50%的长度，再通过transform在x轴上往左偏移50%的元素本身的长度。绝对定位的元素居中基本上原理都相类似 .parent { position: relative; } .child { position: absolute; left: 50%: transform: translateX(-50%); } 2.4.2 元素宽度已知，原理类似2.4.1.parent { position: relative; } .child { position:absolute; left:50%; top:50%; margin-left:-50px; margin-top:-50px; width: 100px; /* 要设定宽度 */ } 2.4.3 利用绝对定位元素的自动伸缩的特性该方法通过设置元素left和right都为0，再设置左边距和右边距为auto，使得margin自动伸缩以满足left和right的设置，最终完成居中。 .parent { position: relative; } .child { position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; width: 100px; /* 要设定宽度 */ }]]></content>
+      <tags>
+        <tag>相对定位</tag>
+        <tag>绝对定位</tag>
+        <tag>居中</tag>
+        <tag>position</tag>
+        <tag>css</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[虚拟Dom--Virtual Dom]]></title>
+    <url>%2FhswxBlog%2F2017%2F11%2F16%2F%E8%99%9A%E6%8B%9FDom-Virtual-Dom%2F</url>
+    <content type="text"></content>
+      <tags>
+        <tag>Virtual Dom</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[快速排序]]></title>
+    <url>%2FhswxBlog%2F2017%2F11%2F03%2F%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%2F</url>
+    <content type="text"><![CDATA[1 算法原理快速排序是找出一个元素（理论上可以随便找一个）作为基准(pivot),然后对数组进行分区操作,使基准左边元素的值都不大于基准值,基准右边的元素值 都不小于基准值，如此作为基准的元素调整到排序后的正确位置。递归快速排序，将其他n-1个元素也调整到排序后的正确位置。最后每个元素都是在排序后的正 确位置，排序完成。所以快速排序算法的核心算法是分区操作，即如何调整基准的位置以及调整返回基准的最终位置以便分治递归。 举例说明一下吧，这个可能不是太好理解。假设要排序的序列为 2 2 4 9 3 6 7 1 5 首先用2当作基准，使用i j两个指针分别从两边进行扫描，把比2小的元素和比2大的元素分开。首先比较2和5，5比2大，j左移 2 2 4 9 3 6 7 1 5 比较2和1，1小于2，所以把1放在2的位置 2 1 4 9 3 6 7 1 5 比较2和4，4大于2，因此将4移动到后面 2 1 4 9 3 6 7 4 5 比较2和7，2和6，2和3，2和9，全部大于2，满足条件，因此不变 经过第一轮的快速排序，元素变为下面的样子 [1] 2 [4 9 3 6 7 5] 之后，在把2左边的元素进行快排，由于只有一个元素，因此快排结束。右边进行快排，递归进行，最终生成最后的结果。 2 算法分析时间复杂度：O( nlogn )，不稳定 3 算法实现/** * * @param array 无序数组 * @param left 左起点 * @param right 右起点 */ function kuaisu(array,left,right) { let _left=left; let _right=right; if(left&lt;right) { let tmp = array[right]; while (left &lt; right) { while (left &lt; right &amp;&amp; array[left] &lt;= tmp) { left++; } array[right] = array[left]; while (left &lt; right &amp;&amp; array[right] &gt;= tmp) { right--; } array[left] = array[right]; array[right] = tmp; } kuaisu(array,_left,right-1); kuaisu(array,left+1,_right); } }]]></content>
+      <tags>
+        <tag>排序算法</tag>
+        <tag>快速排序</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[插入排序]]></title>
+    <url>%2FhswxBlog%2F2017%2F11%2F03%2F%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F%2F</url>
+    <content type="text"><![CDATA[1 算法原理插入即表示将一个新的数据插入到一个有序数组中，并继续保持有序。例如有一个长度为N的无序数组，进行N-1次的插入即能完成排序；第一次，数组第1个数认为是有序的数组，将数组第二个元素插入仅有1个有序的数组中；第二次，数组前两个元素组成有序的数组，将数组第三个元素插入由两个元素构成的有序数组中……第N-1次，数组前N-1个元素组成有序的数组，将数组的第N个元素插入由N-1个元素构成的有序数组中，则完成了整个插入排序。 2 算法分析时间复杂度为O( n^2 )。是稳定的排序方法。 3 算法实现function charu(array) { for(let m=1;m&lt;array.length;m++){ let index=array[m]; let n=m-1; while (array[n]&gt;index&amp;&amp;n&gt;=0){ array[n+1]=array[n]; n--; } array[n+1]=index; } console.log(array); }]]></content>
+      <tags>
+        <tag>排序算法</tag>
+        <tag>插入排序</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[选择排序]]></title>
+    <url>%2FhswxBlog%2F2017%2F11%2F02%2F%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F%2F</url>
+    <content type="text"><![CDATA[1 算法原理在一个长度为N的无序数组中，在第一趟遍历N个数据，找出其中最小的数值与第一个元素交换，第二趟遍历剩下的N-1个数据，找出其中最小的数值与第二个元素交换……第N-1趟遍历剩下的2个数据，找出其中最小的数值与第N-1个元素交换，至此选择排序完成。 2 算法分析时间复杂度：O( n^2 )。选择排序是给每个位置选择当前元素最小的，比如给第一个位置选择最小的，在剩余元素里面给第二个元素选择第二小的，依次类推，直到第n-1个元素，第n个元素不用选择了，因为只剩下它一个最大的元素了。举个例子，序列5 8 5 2 9，我们知道第一遍选择第1个元素5会和2交换，那么原序列中两个5的相对前后顺序就被破坏了，所以选择排序是一个不稳定的排序算法。 3 算法实现function xuanze(array) { for(let i=0;i&lt;array.length-1;i++){ let min=i; for(let j=i+1;j&lt;array.length;j++){ if(array[j]&lt;array[min]){ min=j; } } let tmp=array[i]; array[i]=array[min]; array[min]=tmp; console.log(array); } }]]></content>
+      <tags>
+        <tag>排序算法</tag>
+        <tag>选择排序</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[冒泡排序]]></title>
+    <url>%2FhswxBlog%2F2017%2F11%2F02%2F%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F%2F</url>
+    <content type="text"><![CDATA[1 算法原理冒泡排序算法的运作如下：（从后往前） 比较相邻的元素。如果第一个比第二个大，就交换他们两个。 对每一对相邻元素作同样的工作，从开始第一对到结尾的最后一对。在这一点，最后的元素应该会是最大的数。 针对所有的元素重复以上的步骤，除了最后一个。 持续每次对越来越少的元素重复上面的步骤，直到没有任何一对数字需要比较。 2 算法分析时间复杂度：O( n^2 )，冒泡排序就是把小的元素往前调或者把大的元素往后调，相同的元素是不会交换的，因此冒泡排序是一种稳定排序算法。 3 算法实现function maopao(array) { for(let i=0;i&lt;array.length-1;i++){ for(let j=0;j&lt;array.length-i-1;j++){ if(array[j]&gt;array[j+1]){ let tmp=array[j]; array[j]=array[j+1]; array[j+1]=tmp; } console.log(array); } } } 对冒泡排序常见的改进方法是加入一标志性变量比如index，用于标志某一趟排序过程中是否有数据交换，如果进行某一趟排序时并没有进行数据交换，则说明数据已经按要求排列好，可立即结束排序，避免不必要的比较过程。 function m(array) { for(let i=0;i&lt;array.length-1;i++){ let index=true; for(let j=0;j&lt;array.length-i-1;j++){ if(array[j]&gt;array[j+1]){ index=false; let tmp=array[j]; array[j]=array[j+1]; array[j+1]=tmp; } console.log(array); } if(index){ break; } } }]]></content>
+      <tags>
+        <tag>排序算法</tag>
+        <tag>冒泡排序</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[flex布局]]></title>
+    <url>%2FhswxBlog%2F2017%2F11%2F01%2Fflex%E5%B8%83%E5%B1%80%2F</url>
+    <content type="text"><![CDATA[概念Flex即”弹性布局”，任何一个容器元素都可以指定为 Flex 布局。设为 Flex 布局以后，子元素的float、clear和vertical-align属性将失效，采用flex的相关属性来代替。详细讲解及demo跳转到Flex 布局教程：语法篇，Flex 布局示例。 .box{ display: flex; } 1 容器属性容器属性：flex-direction、flex-wrap、flex-flow、justify-content、align-items、align-content。容器默认存在两根轴：水平的主轴（main axis）和垂直的交叉轴（cross axis）。 1.1 flex-directionrow(默认值)：主轴为水平方向，起点在左端。 row-reverser：主轴为水平方向，起点在右端。 column：主轴为垂直方向，起点在顶部。 column：主轴为垂直方向，起点在底部。 1.2 flex-wrapnowrap（默认）：不换行。 wrap：换行，第一行在上方。 wrap-reverse：换行，第一行在下方。 1.3 flex-flowflex-flow属性是flex-direction属性和flex-wrap属性的简写形式，默认值为row nowrap。 1.4 justify-contentflex-start（默认值）：主轴左对齐。 flex-end：主轴右对齐。 center： 主轴居中。 space-between：主轴两端对齐，项目之间的间隔都相等。 space-around：主轴每个项目两侧的间隔相等。所以，项目之间的间隔比项目与边框的间隔大一倍。 1.5 align-itemsflex-start：交叉轴的起点对齐。 flex-end：交叉轴的终点对齐。 center：交叉轴的中点对齐。 baseline: 项目的第一行文字的基线对齐。 stretch（默认值）：如果项目未设置高度或设为auto，将占满整个容器的高度。 1.6 align-content（多根轴线的情况）flex-start：与交叉轴的起点对齐。 flex-end：与交叉轴的终点对齐。 center：与交叉轴的中点对齐。 space-between：与交叉轴两端对齐，轴线之间的间隔平均分布。 space-around：每根轴线两侧的间隔都相等。所以，轴线之间的间隔比轴线与边框的间隔大一倍。 stretch（默认值）：轴线占满整个交叉轴。 2 子元素属性子元素属性：order、flex-grow、flex-shrink、flex-basis、flex、align-self。 2.1 orderorder属性定义项目的排列顺序。数值越小，排列越靠前，默认为0。 2.2 flex-growflex-grow属性定义项目的放大比例，默认为0，即如果存在剩余空间，也不放大。 如果所有项目的flex-grow属性都为1，则它们将等分剩余空间（如果有的话）。如果一个项目的flex-grow属性为2，其他项目都为1，则前者占据的剩余空间将比其他项多一倍。 2.3 flex-shrinkflex-shrink属性定义了项目的缩小比例，默认为1，即如果空间不足，该项目将缩小。 如果所有项目的flex-shrink属性都为1，当空间不足时，都将等比例缩小。如果一个项目的flex-shrink属性为0，其他项目都为1，则空间不足时，前者不缩小。负值对该属性无效。 2.4 flex-basisflex-basis属性定义了在分配多余空间之前，项目占据的主轴空间（main size）。浏览器根据这个属性，计算主轴是否有多余空间。它的默认值为auto，即项目的本来大小。 2.5 flexflex属性是flex-grow, flex-shrink 和 flex-basis的简写，默认值为0 1 auto。后两个属性可选。 2.6 align-selfalign-self属性允许单个项目有与其他项目不一样的对齐方式，可覆盖align-items属性。默认值为auto，表示继承父元素的align-items属性，如果没有父元素，则等同于stretch。]]></content>
+      <tags>
+        <tag>flex</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[http协议]]></title>
+    <url>%2FhswxBlog%2F2017%2F10%2F30%2Fhttp%E5%8D%8F%E8%AE%AE%2F</url>
+    <content type="text"><![CDATA[1 http与tcp、udp、https的关系TCP和UDP都是网络层上的协议，是建立在IP层之上的。 TCP是有连接的传输，它通过对它下层IP包的冲突、错误检测和重传，保证了最终接收到的数据是可靠的。TCP/IP包括：物理层、数据链路层、网络层、传输层、应用层。 UDP是无连接的，数据包发出去就不管了，没有数据包是否成功并且正确发送的检查，不能保证数据传输100%正确，但是开销会比较小。 HTTP是超文本传输协议，基于TCP协议，HTTP连接最显著的特点是客户端发送的每次请求都需要服务器回送响应，在请求结束后，会主动释放连接。从建立连接到关闭连接的过程称为“一次连接”。 HTTPS是安全超文本传输协议，HTTP是应用层协议，TCP是传输层协议，在应用层和传输层之间，增加了一个安全套接层SSL/TLS： SSL (Secure Socket Layer，安全套接字层) TLS (Transport Layer Security，传输层安全协议) 2 http一次连接 DNS域名解析，找到连接的ip地址 通过3次握手建立TCP连接 向web服务器发送请求命令 web服务器响应请求，返回相应数据 浏览器得到数据，渲染页面呈现给用户 3 http状态码1 1xx:信息100 Continue 服务器仅接收到部分请求，但是一旦服务器并没有拒绝该请求，客户端应该继续发送其余的请求。 101 Switching Protocols 服务器转换协议：服务器将遵从客户的请求转换到另外一种协议。 2 2xx:成功200 OK 请求成功（其后是对GET和POST请求的应答文档。） 201 Created 请求被创建完成，同时新的资源被创建。 202 Accepted 供处理的请求已被接受，但是处理未完成。 203 Non-authoritative Information 文档已经正常地返回，但一些应答头可能不正确，因为使用的是文档的拷贝。 204 No Content 没有新文档。浏览器应该继续显示原来的文档。如果用户定期地刷新页面，而Servlet可以确定用户文档足够新，这个状态代码是很有用的。 205 Reset Content 没有新文档。但浏览器应该重置它所显示的内容。用来强制浏览器清除表单输入内容。 206 Partial Content 客户发送了一个带有Range头的GET请求，服务器完成了它。 3 3xx:重定向300 Multiple Choices 多重选择。链接列表。用户可以选择某链接到达目的地。最多允许五个地址。 301 Moved Permanently 所请求的页面已经转移至新的url。 302 Found 所请求的页面已经临时转移至新的url。 303 See Other 所请求的页面可在别的url下被找到。 304 Not Modified 未按预期修改文档。客户端有缓冲的文档并发出了一个条件性的请求（一般是提供If-Modified-Since头表示客户只想比指定日期更新的文档）。服务器告诉客户，原来缓冲的文档还可以继续使用。 305 Use Proxy 客户请求的文档应该通过Location头所指明的代理服务器提取。 306 Unused 此代码被用于前一版本。目前已不再使用，但是代码依然被保留。 307 Temporary Redirect 被请求的页面已经临时移至新的url。 4 4xx:客户端错误400 Bad Request 服务器未能理解请求。 401 Unauthorized 被请求的页面需要用户名和密码。 402 Payment Required 此代码尚无法使用。 403 Forbidden 对被请求页面的访问被禁止。 404 Not Found 服务器无法找到被请求的页面。 405 Method Not Allowed 请求中指定的方法不被允许。 406 Not Acceptable 服务器生成的响应无法被客户端所接受。 407 Proxy Authentication Required 用户必须首先使用代理服务器进行验证，这样请求才会被处理。 408 Request Timeout 请求超出了服务器的等待时间。 409 Conflict 由于冲突，请求无法被完成。 410 Gone 被请求的页面不可用。 411 Length Required “Content-Length” 未被定义。如果无此内容，服务器不会接受请求。 412 Precondition Failed 请求中的前提条件被服务器评估为失败。 413 Request Entity Too Large 由于所请求的实体的太大，服务器不会接受请求。 414 Request-url Too Long 由于url太长，服务器不会接受请求。当post请求被转换为带有很长的查询信息的get请求时，就会发生这种情况。 415 Unsupported Media Type 由于媒介类型不被支持，服务器不会接受请求。 416 Requested Range Not Satisfiable 服务器不能满足客户在请求中指定的Range头。 417 Expectation Failed 执行失败。 423 锁定的错误。 5 5xx:服务器错误500 Internal Server Error 请求未完成。服务器遇到不可预知的情况。 501 Not Implemented 请求未完成。服务器不支持所请求的功能。 502 Bad Gateway 请求未完成。服务器从上游服务器收到一个无效的响应。 503 Service Unavailable 请求未完成。服务器临时过载或当机。 504 Gateway Timeout 网关超时。 505 HTTP Version Not Supported 服务器不支持请求中指明的HTTP协议版本。]]></content>
+      <tags>
+        <tag>http</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Node.js创建HTTP服务]]></title>
+    <url>%2FhswxBlog%2F2017%2F10%2F27%2FNode-js%E5%88%9B%E5%BB%BAHTTP%E6%9C%8D%E5%8A%A1%2F</url>
+    <content type="text"><![CDATA[1、引入模块，通过变量来接收 2、通过http.createServer()创建服务，注意后面跟上一个匿名函数 request 请求 response 响应 3、通过server.listen()监听了端口号和访问地址 4、通过response.writeHead()设置网页状态码和文档内容类型 5、通过response.end()返回结果 var http = require(&quot;http&quot;);//变量http得到被引入模块&quot;http&quot;的所有接口 //创建服务器，参数是一个回调函数，表示如果有请求进来，要做什么 var server = http.createServer(function (request,response) { /* 设置响应HTTP头部信息 第一个参数：传入网页状态码，200表示请求正常 第二个参数：设置文档内容类型，text/html表示html文档类型，charset=UTF-8表示文档编码类型是UTF-8 */ response.writeHead(200,{&quot;Content-type&quot;:&quot;text/html;charset=UTF-8&quot;}); /* Node.js没有web容器概念，不管访问路径是什么，同一个host下都是返回同一个页面，并不会有区别 比如localhost:3000和localhost:3000/test返回同样的结果 */ console.log(1);//发起请求时，控制台会出现两次：一次是正常请求，一次是小图标favicon.icon console.log(&quot;请求地址&quot;+request.url); response.end(&quot;hello&quot;);//如果没有执行response.end()会存在挂起状态 }); server.listen(3000,&quot;127.0.0.1&quot;); /* 服务器默认端口号：80端口 Tomcat默认端口：8080 */]]></content>
+      <tags>
+        <tag>Node.js</tag>
+        <tag>HTTP</tag>
+        <tag>http</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Nodejs简介]]></title>
+    <url>%2FhswxBlog%2F2017%2F10%2F27%2Fnodejs%E7%AE%80%E4%BB%8B%2F</url>
+    <content type="text"><![CDATA[1 简介 V8引擎：Chrome浏览器的js解释器 Node.js：让JavaScript运行在服务器端的开发平台。与PHP、java等不同的是，Node.js的开发语言是JavaScript，运行在JavaScript的V8引擎上。Node.js不需要建设在任何服务器(Apache、Nginx)上，没有web容器。 2 特点2.1 单线程 在Java、PHP或者.net等服务器端语言中，会为每一个客户端连接创建一个新的线程。而每个线程需要耗费大约2MB内存。理论上，一个8GB内存的服务器可以同时连接的最大用户数为4000个左右。要让Web应用程序支持更多的用户，就需要增加服务器的数量，而Web应用程序的硬件成本当然就上升了。 Node.js不为每个客户连接创建一个新的线程，而仅仅使用一个线程。当有用户连接了，就触发一个内部事件，通过非阻塞I/O、事件驱动机制，让Node.js程序宏观上也是并行的，在宏观上形成并发。使用Node.js，一个8GB内存的服务器，可以同时处理超过4万用户的连接，而且操作系统也不会有线程创建和销毁的额外开销。但也存在一定的问题，一旦某个连接造成线程的崩溃，整个服务也就崩溃了。 2.2 非阻塞I/O non-blocking I/O 传统的单线程处理机制中，在进行I/O操作(读写数据库、文件等)的时候，整个线程都需要暂停下来，等待I/O操作返回结果之后才会继续执行。一个线程只能处理一个任务，要想进行多I/O的同步的操作，就必须开启多个线程，单个线程在等待I/O返回结果的时间内会一直处于阻塞状态，单个线程的利用率很低，整个程序的执行效率也因此而非常低下。 Node.js中采用了非阻塞型I/O机制，在执行I/O操作的时候，将I/O操作的任务放在一边，继续执行后面的任务，这样一个线程永远在执行计算操作，该线程的利用率一直是100%。I/O操作会有一个回调函数，当I/O任务执行完毕，将以事件的形式通知I/O操作的线程，执行回调函数。在Node.js中，为了处理异步I/O，线程存在事件循环机制，不断检查有没有未处理的事件，依次予以处理。 2.3 事件驱动 event-driven 在Node中，客户端请求建立连接，提交数据等行为，会触发相应的事件。在Node中，在一个时刻，只能执行一个事件回调函数，但是在执行一个事件回调函数的中途，可以转而处理其他事件（比如，又有新用户连接了），然后返回继续执行原事件的回调函数，这种处理机制，称为“事件环”机制。 Node.js底层是C++（V8也是C++写的）。底层代码中，近半数都用于事件队列、回调函数队列的构建。用事件驱动来完成服务器的任务调度，用一个线程，担负起了处理非常多的任务的使命。 3 应用场景Node.js善于I/O，不善于计算。因为Node.js最擅长的就是任务调度，如果你的业务有很多的CPU计算，实际上也相当于这个计算阻塞了这个单线程，就不适合Node开发。当应用程序需要处理大量并发的I/O，而在向客户端发出响应之前，应用程序内部并不需要进行非常复杂的处理的时候，Node.js非常适合。Node.js也非常适合与web socket配合，开发长连接的实时交互应用程序。]]></content>
+      <tags>
+        <tag>Node.js</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[使用说明]]></title>
+    <url>%2FhswxBlog%2F2017%2F10%2F26%2F%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E%2F</url>
+    <content type="text"><![CDATA[使用hexo新建：在根目录下 hexo new 文件名 自己新建文档，需要格式为md(markdown)，文件中需要带上以下内容： --- title: #文档标题 date: #日期时间 年-月-日 时:分:秒 tags: #用双引号包裹标签，多个标签的情况用‘，’隔开并用[]包裹 --- hexo部署方法： hexo clean hexo g hexo deploy hexo本地运行方法： hexo server]]></content>
+  </entry>
+</search>

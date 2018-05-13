@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/hswxBlog/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/hswxBlog/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/hswxBlog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/hswxBlog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/hswxBlog/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/hswxBlog/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/hswxBlog/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/hswxBlog/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/hswxBlog/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="浅拷贝,深拷贝," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="为什么要进行浅/深拷贝JavaScript语言中，数据的类型有两种，一种是值类型，保存在栈中，一种是引用类型，保存在堆中。值类型保存和传递的是变量的值，而引用类型保存和传递的是变量的引用，传递之后的变量和传递之前的变量引用的是同一块内存保存的数据，就会产生下面的情况。当我们修改某一引用类型的变量时候，指向这块内存的所有的变量的值都会改变。 var m={a:1}; var n=m; n.a=2;">
+<meta name="keywords" content="浅拷贝,深拷贝">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅拷贝和深拷贝">
+<meta property="og:url" content="https://hswx.github.io/hswxBlog/2017/11/27/浅拷贝和深拷贝/index.html">
+<meta property="og:site_name" content="寒山问雪">
+<meta property="og:description" content="为什么要进行浅/深拷贝JavaScript语言中，数据的类型有两种，一种是值类型，保存在栈中，一种是引用类型，保存在堆中。值类型保存和传递的是变量的值，而引用类型保存和传递的是变量的引用，传递之后的变量和传递之前的变量引用的是同一块内存保存的数据，就会产生下面的情况。当我们修改某一引用类型的变量时候，指向这块内存的所有的变量的值都会改变。 var m={a:1}; var n=m; n.a=2;">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-05-13T13:25:41.440Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="浅拷贝和深拷贝">
+<meta name="twitter:description" content="为什么要进行浅/深拷贝JavaScript语言中，数据的类型有两种，一种是值类型，保存在栈中，一种是引用类型，保存在堆中。值类型保存和传递的是变量的值，而引用类型保存和传递的是变量的引用，传递之后的变量和传递之前的变量引用的是同一块内存保存的数据，就会产生下面的情况。当我们修改某一引用类型的变量时候，指向这块内存的所有的变量的值都会改变。 var m={a:1}; var n=m; n.a=2;">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/hswxBlog/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '寒山问雪'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hswx.github.io/hswxBlog/2017/11/27/浅拷贝和深拷贝/"/>
+
+
+
+
+
+  <title>浅拷贝和深拷贝 | 寒山问雪</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/hswxBlog/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">寒山问雪</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/hswxBlog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/hswxBlog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/hswxBlog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://hswx.github.io/hswxBlog/hswxBlog/2017/11/27/浅拷贝和深拷贝/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="寒山问雪">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/hswxBlog/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="寒山问雪">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">浅拷贝和深拷贝</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-27T18:18:53+08:00">
+                2017-11-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  624
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  2
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="为什么要进行浅-深拷贝"><a href="#为什么要进行浅-深拷贝" class="headerlink" title="为什么要进行浅/深拷贝"></a>为什么要进行浅/深拷贝</h1><p>JavaScript语言中，数据的类型有两种，一种是值类型，保存在栈中，一种是引用类型，保存在堆中。值类型保存和传递的是变量的值，而引用类型保存和传递的是变量的引用，传递之后的变量和传递之前的变量引用的是同一块内存保存的数据，就会产生下面的情况。当我们修改某一引用类型的变量时候，指向这块内存的所有的变量的值都会改变。</p>
+<pre><code>var m={a:1};
+var n=m;
+n.a=2;
+console.log(m.a); // 2
+</code></pre><h1 id="浅-深拷贝的区别"><a href="#浅-深拷贝的区别" class="headerlink" title="浅/深拷贝的区别"></a>浅/深拷贝的区别</h1><p>对于基本数据类型/值类型（string、number、boolean、undefined、null），浅复制是对值的复制。对于复杂数据类型/引用类型object来说，浅复制是对对象地址的复制，并没有开辟新的栈，也就是复制的结果是两个对象指向同一个地址，修改其中一个对象的属性，则另一个对象的属性也会改变，而深复制则是开辟新的栈，两个对象对应两个不同的地址，修改一个对象的属性，不会改变另一个对象的属性。</p>
+<h1 id="浅拷贝的实现"><a href="#浅拷贝的实现" class="headerlink" title="浅拷贝的实现"></a>浅拷贝的实现</h1><p>浅复制只复制一层对象的属性，要注意的是，这里通过for…in的方式获取第一层属性，有可能拿到对象可枚举的原型属性，通过Object.hasOwnProperty()来判断是否是对象自身的属性。当然，也可以通过Object.keys()获取对象自身的属性来遍历。</p>
+<pre><code>function shallowCopy(obj) {
+    var result = {};
+    for (let key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            result[key] = obj[key];
+        }
+    }
+    return result;
+}
+</code></pre><h1 id="深拷贝的实现"><a href="#深拷贝的实现" class="headerlink" title="深拷贝的实现"></a>深拷贝的实现</h1><p>深拷贝需要开辟新的地址，把被复制对象的所有层级都复制过来，目前深复制通常有两种方式，第一种借用JSON.stringify和JSON.parse来做：</p>
+<pre><code>JSON.parse( JSON.stringify(obj))
+</code></pre><p>这种方式在一些简单的应用场景中比较方便，但是存在一些问题，比如当对象中存在引用自身的情况，var obj={a:1,b:obj}，JSON的转换会报错，JSON无法转换Regx</p>
+<pre><code>function deepCopy(obj, finalRes) {
+    var res = finalRes || {};
+    for (var i in obj) {
+        var prop = obj[i];
+        if(prop === res) { // 这里防止obj对象中的属性值也是obj导致死循环
+            continue;
+        }
+        if (typeof prop === &apos;object&apos;) {
+            res[i] = (prop.constructor === Array) ? [] : {}; 
+            deepCopy(prop, res[i]);
+        } else { // prop是基本类型或者是function的情况下
+            res[i] = prop;
+        }
+    }
+    return res;
+}
+</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/hswxBlog/tags/浅拷贝/" rel="tag"># 浅拷贝</a>
+          
+            <a href="/hswxBlog/tags/深拷贝/" rel="tag"># 深拷贝</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/hswxBlog/2017/11/21/js模块化/" rel="next" title="js模块化">
+                <i class="fa fa-chevron-left"></i> js模块化
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/hswxBlog/2018/04/23/bodymovin插件编写复杂动效/" rel="prev" title="bodymovin(Lottie)插件编写跨平台复杂动效">
+                bodymovin(Lottie)插件编写跨平台复杂动效 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/hswxBlog/images/avatar.gif"
+                alt="寒山问雪" />
+            
+              <p class="site-author-name" itemprop="name">寒山问雪</p>
+              <p class="site-description motion-element" itemprop="description">html,css,javascript,angular,vue,react,node,各种前端水文</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/hswxBlog/archives/">
+              
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/hswxBlog/tags/index.html">
+                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#为什么要进行浅-深拷贝"><span class="nav-number">1.</span> <span class="nav-text">为什么要进行浅/深拷贝</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#浅-深拷贝的区别"><span class="nav-number">2.</span> <span class="nav-text">浅/深拷贝的区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#浅拷贝的实现"><span class="nav-number">3.</span> <span class="nav-text">浅拷贝的实现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#深拷贝的实现"><span class="nav-number">4.</span> <span class="nav-text">深拷贝的实现</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">寒山问雪 QQ: 597084762</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/hswxBlog/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/hswxBlog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/hswxBlog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/hswxBlog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/hswxBlog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/hswxBlog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/hswxBlog/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/hswxBlog/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/hswxBlog/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/hswxBlog/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/hswxBlog/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/hswxBlog/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/hswxBlog/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+<script src="/hswxBlog/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/hswxBlog/live2dw/assets/miku.model.json"},"display":{"superSample":2,"width":100,"height":200,"position":"left","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.3},"react":{"opacityDefault":0.8,"opacityOnHover":0.6}});</script></body>
+</html>

@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/hswxBlog/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/hswxBlog/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/hswxBlog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/hswxBlog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/hswxBlog/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/hswxBlog/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/hswxBlog/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/hswxBlog/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/hswxBlog/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Node.js," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="1 简介  V8引擎：Chrome浏览器的js解释器   Node.js：让JavaScript运行在服务器端的开发平台。与PHP、java等不同的是，Node.js的开发语言是JavaScript，运行在JavaScript的V8引擎上。Node.js不需要建设在任何服务器(Apache、Nginx)上，没有web容器。 2 特点2.1 单线程  在Java、PHP或者.net等服务器端语言中，">
+<meta name="keywords" content="Node.js">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nodejs简介">
+<meta property="og:url" content="https://hswx.github.io/hswxBlog/2017/10/27/nodejs简介/index.html">
+<meta property="og:site_name" content="寒山问雪">
+<meta property="og:description" content="1 简介  V8引擎：Chrome浏览器的js解释器   Node.js：让JavaScript运行在服务器端的开发平台。与PHP、java等不同的是，Node.js的开发语言是JavaScript，运行在JavaScript的V8引擎上。Node.js不需要建设在任何服务器(Apache、Nginx)上，没有web容器。 2 特点2.1 单线程  在Java、PHP或者.net等服务器端语言中，">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://sfault-image.b0.upaiyun.com/528/256/528256591-578cd40ec0405">
+<meta property="og:image" content="https://sfault-image.b0.upaiyun.com/247/006/2470064245-578cd8e2b5a3e">
+<meta property="og:updated_time" content="2018-05-13T13:25:41.435Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nodejs简介">
+<meta name="twitter:description" content="1 简介  V8引擎：Chrome浏览器的js解释器   Node.js：让JavaScript运行在服务器端的开发平台。与PHP、java等不同的是，Node.js的开发语言是JavaScript，运行在JavaScript的V8引擎上。Node.js不需要建设在任何服务器(Apache、Nginx)上，没有web容器。 2 特点2.1 单线程  在Java、PHP或者.net等服务器端语言中，">
+<meta name="twitter:image" content="https://sfault-image.b0.upaiyun.com/528/256/528256591-578cd40ec0405">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/hswxBlog/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '寒山问雪'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hswx.github.io/hswxBlog/2017/10/27/nodejs简介/"/>
+
+
+
+
+
+  <title>Nodejs简介 | 寒山问雪</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/hswxBlog/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">寒山问雪</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/hswxBlog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/hswxBlog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/hswxBlog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://hswx.github.io/hswxBlog/hswxBlog/2017/10/27/nodejs简介/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="寒山问雪">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/hswxBlog/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="寒山问雪">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Nodejs简介</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-27T12:13:40+08:00">
+                2017-10-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,006
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  4
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="1-简介"><a href="#1-简介" class="headerlink" title="1 简介"></a>1 简介</h1><p>  V8引擎：Chrome浏览器的js解释器</p>
+<p>  Node.js：让JavaScript运行在服务器端的开发平台。与PHP、java等不同的是，Node.js的开发语言是JavaScript，运行在JavaScript的V8引擎上。Node.js不需要建设在任何服务器(Apache、Nginx)上，没有web容器。</p>
+<h1 id="2-特点"><a href="#2-特点" class="headerlink" title="2 特点"></a>2 特点</h1><h2 id="2-1-单线程"><a href="#2-1-单线程" class="headerlink" title="2.1 单线程"></a>2.1 单线程</h2><p>  在Java、PHP或者.net等服务器端语言中，会为每一个客户端连接创建一个新的线程。而每个线程需要耗费大约2MB内存。理论上，一个8GB内存的服务器可以同时连接的最大用户数为4000个左右。要让Web应用程序支持更多的用户，就需要增加服务器的数量，而Web应用程序的硬件成本当然就上升了。</p>
+<p>  Node.js不为每个客户连接创建一个新的线程，而仅仅使用一个线程。当有用户连接了，就触发一个内部事件，通过非阻塞I/O、事件驱动机制，让Node.js程序宏观上也是并行的，在宏观上形成并发。使用Node.js，一个8GB内存的服务器，可以同时处理超过4万用户的连接，而且操作系统也不会有线程创建和销毁的额外开销。但也存在一定的问题，一旦某个连接造成线程的崩溃，整个服务也就崩溃了。</p>
+<p><img src="https://sfault-image.b0.upaiyun.com/528/256/528256591-578cd40ec0405" alt=""></p>
+<p><img src="https://sfault-image.b0.upaiyun.com/247/006/2470064245-578cd8e2b5a3e" alt=""></p>
+<h2 id="2-2-非阻塞I-O-non-blocking-I-O"><a href="#2-2-非阻塞I-O-non-blocking-I-O" class="headerlink" title="2.2 非阻塞I/O non-blocking I/O"></a>2.2 非阻塞I/O non-blocking I/O</h2><p>  传统的单线程处理机制中，在进行I/O操作(读写数据库、文件等)的时候，整个线程都需要暂停下来，等待I/O操作返回结果之后才会继续执行。一个线程只能处理一个任务，要想进行多I/O的同步的操作，就必须开启多个线程，单个线程在等待I/O返回结果的时间内会一直处于阻塞状态，单个线程的利用率很低，整个程序的执行效率也因此而非常低下。</p>
+<p>  Node.js中采用了非阻塞型I/O机制，在执行I/O操作的时候，将I/O操作的任务放在一边，继续执行后面的任务，这样一个线程永远在执行计算操作，该线程的利用率一直是100%。I/O操作会有一个回调函数，当I/O任务执行完毕，将以事件的形式通知I/O操作的线程，执行回调函数。在Node.js中，为了处理异步I/O，线程存在事件循环机制，不断检查有没有未处理的事件，依次予以处理。</p>
+<h2 id="2-3-事件驱动-event-driven"><a href="#2-3-事件驱动-event-driven" class="headerlink" title="2.3 事件驱动 event-driven"></a>2.3 事件驱动 event-driven</h2><p>  在Node中，客户端请求建立连接，提交数据等行为，会触发相应的事件。在Node中，在一个时刻，只能执行一个事件回调函数，但是在执行一个事件回调函数的中途，可以转而处理其他事件（比如，又有新用户连接了），然后返回继续执行原事件的回调函数，这种处理机制，称为“事件环”机制。</p>
+<p>  Node.js底层是C++（V8也是C++写的）。底层代码中，近半数都用于事件队列、回调函数队列的构建。用事件驱动来完成服务器的任务调度，用一个线程，担负起了处理非常多的任务的使命。</p>
+<h1 id="3-应用场景"><a href="#3-应用场景" class="headerlink" title="3 应用场景"></a>3 应用场景</h1><p>Node.js善于I/O，不善于计算。因为Node.js最擅长的就是任务调度，如果你的业务有很多的CPU计算，实际上也相当于这个计算阻塞了这个单线程，就不适合Node开发。当应用程序需要处理大量并发的I/O，而在向客户端发出响应之前，应用程序内部并不需要进行非常复杂的处理的时候，Node.js非常适合。Node.js也非常适合与web socket配合，开发长连接的实时交互应用程序。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/hswxBlog/tags/Node-js/" rel="tag"># Node.js</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/hswxBlog/2017/10/26/使用说明/" rel="next" title="使用说明">
+                <i class="fa fa-chevron-left"></i> 使用说明
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/hswxBlog/2017/10/27/Node-js创建HTTP服务/" rel="prev" title="Node.js创建HTTP服务">
+                Node.js创建HTTP服务 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/hswxBlog/images/avatar.gif"
+                alt="寒山问雪" />
+            
+              <p class="site-author-name" itemprop="name">寒山问雪</p>
+              <p class="site-description motion-element" itemprop="description">html,css,javascript,angular,vue,react,node,各种前端水文</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/hswxBlog/archives/">
+              
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/hswxBlog/tags/index.html">
+                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-简介"><span class="nav-number">1.</span> <span class="nav-text">1 简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-特点"><span class="nav-number">2.</span> <span class="nav-text">2 特点</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-单线程"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 单线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-非阻塞I-O-non-blocking-I-O"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 非阻塞I/O non-blocking I/O</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-事件驱动-event-driven"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 事件驱动 event-driven</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-应用场景"><span class="nav-number">3.</span> <span class="nav-text">3 应用场景</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">寒山问雪 QQ: 597084762</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/hswxBlog/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/hswxBlog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/hswxBlog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/hswxBlog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/hswxBlog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/hswxBlog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/hswxBlog/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/hswxBlog/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/hswxBlog/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/hswxBlog/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/hswxBlog/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/hswxBlog/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/hswxBlog/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+<script src="/hswxBlog/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/hswxBlog/live2dw/assets/miku.model.json"},"display":{"superSample":2,"width":100,"height":200,"position":"left","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.3},"react":{"opacityDefault":0.8,"opacityOnHover":0.6}});</script></body>
+</html>

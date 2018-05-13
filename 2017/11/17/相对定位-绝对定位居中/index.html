@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/hswxBlog/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/hswxBlog/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/hswxBlog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/hswxBlog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/hswxBlog/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/hswxBlog/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/hswxBlog/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/hswxBlog/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/hswxBlog/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="相对定位,绝对定位,居中,position,css," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="1 css定位属性position static    默认。位置设置为 static 的元素，它始终会处于页面流给予的位置（static 元素会忽略任何 top、bottom、left 或 right 声明）。 relative 位置被设置为 relative 的元素，可将其移至相对于其正常位置的地方，元素仍保持其未定位前的形状，它原本所占的空间仍保留。即元素设置的margin、border、p">
+<meta name="keywords" content="相对定位,绝对定位,居中,position,css">
+<meta property="og:type" content="article">
+<meta property="og:title" content="css居中">
+<meta property="og:url" content="https://hswx.github.io/hswxBlog/2017/11/17/相对定位-绝对定位居中/index.html">
+<meta property="og:site_name" content="寒山问雪">
+<meta property="og:description" content="1 css定位属性position static    默认。位置设置为 static 的元素，它始终会处于页面流给予的位置（static 元素会忽略任何 top、bottom、left 或 right 声明）。 relative 位置被设置为 relative 的元素，可将其移至相对于其正常位置的地方，元素仍保持其未定位前的形状，它原本所占的空间仍保留。即元素设置的margin、border、p">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://www.w3school.com.cn/i/ct_css_positioning_relative_example.gif">
+<meta property="og:image" content="http://www.w3school.com.cn/i/ct_css_positioning_absolute_example.gif">
+<meta property="og:updated_time" content="2018-05-13T13:25:41.441Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="css居中">
+<meta name="twitter:description" content="1 css定位属性position static    默认。位置设置为 static 的元素，它始终会处于页面流给予的位置（static 元素会忽略任何 top、bottom、left 或 right 声明）。 relative 位置被设置为 relative 的元素，可将其移至相对于其正常位置的地方，元素仍保持其未定位前的形状，它原本所占的空间仍保留。即元素设置的margin、border、p">
+<meta name="twitter:image" content="http://www.w3school.com.cn/i/ct_css_positioning_relative_example.gif">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/hswxBlog/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '寒山问雪'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hswx.github.io/hswxBlog/2017/11/17/相对定位-绝对定位居中/"/>
+
+
+
+
+
+  <title>css居中 | 寒山问雪</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/hswxBlog/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">寒山问雪</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/hswxBlog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/hswxBlog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/hswxBlog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://hswx.github.io/hswxBlog/hswxBlog/2017/11/17/相对定位-绝对定位居中/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="寒山问雪">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/hswxBlog/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="寒山问雪">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">css居中</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-17T10:13:55+08:00">
+                2017-11-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  596
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  2
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="1-css定位属性position"><a href="#1-css定位属性position" class="headerlink" title="1 css定位属性position"></a>1 css定位属性position</h1><ul>
+<li>static    默认。位置设置为 static 的元素，它始终会处于页面流给予的位置（static 元素会忽略任何 top、bottom、left 或 right 声明）。</li>
+<li>relative 位置被设置为 relative 的元素，可将其移至相对于其正常位置的地方，元素仍保持其未定位前的形状，它原本所占的空间仍保留。即元素设置的margin、border、padding、height等属性仍会对原本占有的空间产生影响。<br><img src="http://www.w3school.com.cn/i/ct_css_positioning_relative_example.gif" alt=""></li>
+<li>absolute 位置设置为 absolute 的元素，绝对定位的元素的位置相对于<strong>最近的已定位祖先元素</strong>，如果元素没有已定位的祖先元素，那么它的位置相对于<strong>最初的包含块</strong>，<em>注意position:static的元素属于未定位元素</em>。absolute下，元素不占据原来的空间，元素的变化对原来的空间不产生影响，就好像元素不存在一样。<br><img src="http://www.w3school.com.cn/i/ct_css_positioning_absolute_example.gif" alt=""></li>
+<li>fixed 位置被设置为 fixed 的元素，实质上也是absolute定位，只不过位置相对于浏览器窗口进行定位。</li>
+</ul>
+<h1 id="2-各种居中"><a href="#2-各种居中" class="headerlink" title="2 各种居中"></a>2 各种居中</h1><h2 id="2-1-text-align-center"><a href="#2-1-text-align-center" class="headerlink" title="2.1 text-align:center"></a>2.1 text-align:center</h2><p>用于行内元素的居中，比如span、button等，或者display设置了inline或者inline-block的元素。</p>
+<h2 id="2-2-margin-0-auto"><a href="#2-2-margin-0-auto" class="headerlink" title="2.2 margin:0 auto"></a>2.2 margin:0 auto</h2><p>用于元素水平居中，但对浮动元素和绝对定位元素无效。</p>
+<h2 id="2-3-flex-justify-content"><a href="#2-3-flex-justify-content" class="headerlink" title="2.3 flex+justify-content"></a>2.3 flex+justify-content</h2><p>采用flex布局，设置父容器的display为flex，采用jsutify-content设置容器中项目的对齐方式。</p>
+<pre><code>display: flex;
+justify-content: center;
+</code></pre><h2 id="2-4-绝对定位元素的居中"><a href="#2-4-绝对定位元素的居中" class="headerlink" title="2.4 绝对定位元素的居中"></a>2.4 绝对定位元素的居中</h2><h3 id="2-4-1-CSS3-transform"><a href="#2-4-1-CSS3-transform" class="headerlink" title="2.4.1 CSS3 transform"></a>2.4.1 CSS3 transform</h3><p>该方法首先通过绝对定位，是元素距已定位祖先元素左边50%的长度，再通过transform在x轴上往左偏移50%的元素本身的长度。绝对定位的元素居中基本上原理都相类似</p>
+<pre><code>.parent {
+   position: relative;
+}
+.child {
+   position: absolute;
+   left: 50%:
+   transform: translateX(-50%);
+}
+</code></pre><h3 id="2-4-2-元素宽度已知，原理类似2-4-1"><a href="#2-4-2-元素宽度已知，原理类似2-4-1" class="headerlink" title="2.4.2 元素宽度已知，原理类似2.4.1"></a>2.4.2 元素宽度已知，原理类似2.4.1</h3><pre><code>.parent {
+  position: relative;
+}
+.child {
+  position:absolute;
+  left:50%;
+  top:50%;
+  margin-left:-50px;
+  margin-top:-50px;
+  width: 100px; /* 要设定宽度 */
+}
+</code></pre><h3 id="2-4-3-利用绝对定位元素的自动伸缩的特性"><a href="#2-4-3-利用绝对定位元素的自动伸缩的特性" class="headerlink" title="2.4.3 利用绝对定位元素的自动伸缩的特性"></a>2.4.3 利用绝对定位元素的自动伸缩的特性</h3><p>该方法通过设置元素left和right都为0，再设置左边距和右边距为auto，使得margin自动伸缩以满足left和right的设置，最终完成居中。</p>
+<pre><code>.parent {
+  position: relative;
+}
+.child {
+  position: absolute; 
+  left: 0; 
+  right: 0; 
+  margin-left: auto; 
+  margin-right: auto; 
+  width: 100px; /* 要设定宽度 */
+}
+</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/hswxBlog/tags/相对定位/" rel="tag"># 相对定位</a>
+          
+            <a href="/hswxBlog/tags/绝对定位/" rel="tag"># 绝对定位</a>
+          
+            <a href="/hswxBlog/tags/居中/" rel="tag"># 居中</a>
+          
+            <a href="/hswxBlog/tags/position/" rel="tag"># position</a>
+          
+            <a href="/hswxBlog/tags/css/" rel="tag"># css</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/hswxBlog/2017/11/16/虚拟Dom-Virtual-Dom/" rel="next" title="虚拟Dom--Virtual Dom">
+                <i class="fa fa-chevron-left"></i> 虚拟Dom--Virtual Dom
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/hswxBlog/2017/11/21/js模块化/" rel="prev" title="js模块化">
+                js模块化 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/hswxBlog/images/avatar.gif"
+                alt="寒山问雪" />
+            
+              <p class="site-author-name" itemprop="name">寒山问雪</p>
+              <p class="site-description motion-element" itemprop="description">html,css,javascript,angular,vue,react,node,各种前端水文</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/hswxBlog/archives/">
+              
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/hswxBlog/tags/index.html">
+                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-css定位属性position"><span class="nav-number">1.</span> <span class="nav-text">1 css定位属性position</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-各种居中"><span class="nav-number">2.</span> <span class="nav-text">2 各种居中</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-text-align-center"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 text-align:center</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-margin-0-auto"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 margin:0 auto</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-flex-justify-content"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 flex+justify-content</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-绝对定位元素的居中"><span class="nav-number">2.4.</span> <span class="nav-text">2.4 绝对定位元素的居中</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-1-CSS3-transform"><span class="nav-number">2.4.1.</span> <span class="nav-text">2.4.1 CSS3 transform</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-2-元素宽度已知，原理类似2-4-1"><span class="nav-number">2.4.2.</span> <span class="nav-text">2.4.2 元素宽度已知，原理类似2.4.1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-3-利用绝对定位元素的自动伸缩的特性"><span class="nav-number">2.4.3.</span> <span class="nav-text">2.4.3 利用绝对定位元素的自动伸缩的特性</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">寒山问雪 QQ: 597084762</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/hswxBlog/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/hswxBlog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/hswxBlog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/hswxBlog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/hswxBlog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/hswxBlog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/hswxBlog/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/hswxBlog/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/hswxBlog/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/hswxBlog/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/hswxBlog/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/hswxBlog/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/hswxBlog/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+<script src="/hswxBlog/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/hswxBlog/live2dw/assets/miku.model.json"},"display":{"superSample":2,"width":100,"height":200,"position":"left","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.3},"react":{"opacityDefault":0.8,"opacityOnHover":0.6}});</script></body>
+</html>

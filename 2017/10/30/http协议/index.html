@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/hswxBlog/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/hswxBlog/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/hswxBlog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/hswxBlog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/hswxBlog/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/hswxBlog/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/hswxBlog/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/hswxBlog/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/hswxBlog/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="http," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="1 http与tcp、udp、https的关系TCP和UDP都是网络层上的协议，是建立在IP层之上的。 TCP是有连接的传输，它通过对它下层IP包的冲突、错误检测和重传，保证了最终接收到的数据是可靠的。TCP/IP包括：物理层、数据链路层、网络层、传输层、应用层。 UDP是无连接的，数据包发出去就不管了，没有数据包是否成功并且正确发送的检查，不能保证数据传输100%正确，但是开销会比较小。 HTT">
+<meta name="keywords" content="http">
+<meta property="og:type" content="article">
+<meta property="og:title" content="http协议">
+<meta property="og:url" content="https://hswx.github.io/hswxBlog/2017/10/30/http协议/index.html">
+<meta property="og:site_name" content="寒山问雪">
+<meta property="og:description" content="1 http与tcp、udp、https的关系TCP和UDP都是网络层上的协议，是建立在IP层之上的。 TCP是有连接的传输，它通过对它下层IP包的冲突、错误检测和重传，保证了最终接收到的数据是可靠的。TCP/IP包括：物理层、数据链路层、网络层、传输层、应用层。 UDP是无连接的，数据包发出去就不管了，没有数据包是否成功并且正确发送的检查，不能保证数据传输100%正确，但是开销会比较小。 HTT">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-05-13T13:25:41.431Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="http协议">
+<meta name="twitter:description" content="1 http与tcp、udp、https的关系TCP和UDP都是网络层上的协议，是建立在IP层之上的。 TCP是有连接的传输，它通过对它下层IP包的冲突、错误检测和重传，保证了最终接收到的数据是可靠的。TCP/IP包括：物理层、数据链路层、网络层、传输层、应用层。 UDP是无连接的，数据包发出去就不管了，没有数据包是否成功并且正确发送的检查，不能保证数据传输100%正确，但是开销会比较小。 HTT">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/hswxBlog/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '寒山问雪'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hswx.github.io/hswxBlog/2017/10/30/http协议/"/>
+
+
+
+
+
+  <title>http协议 | 寒山问雪</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/hswxBlog/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">寒山问雪</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/hswxBlog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/hswxBlog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/hswxBlog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://hswx.github.io/hswxBlog/hswxBlog/2017/10/30/http协议/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="寒山问雪">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/hswxBlog/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="寒山问雪">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">http协议</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-30T14:05:29+08:00">
+                2017-10-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,379
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  5
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="1-http与tcp、udp、https的关系"><a href="#1-http与tcp、udp、https的关系" class="headerlink" title="1 http与tcp、udp、https的关系"></a>1 http与tcp、udp、https的关系</h1><p>TCP和UDP都是网络层上的协议，是建立在IP层之上的。</p>
+<p>TCP是有连接的传输，它通过对它下层IP包的冲突、错误检测和重传，保证了最终接收到的数据是可靠的。TCP/IP包括：物理层、数据链路层、网络层、传输层、应用层。</p>
+<p>UDP是无连接的，数据包发出去就不管了，没有数据包是否成功并且正确发送的检查，不能保证数据传输100%正确，但是开销会比较小。</p>
+<p>HTTP是超文本传输协议，基于TCP协议，HTTP连接最显著的特点是客户端发送的每次请求都需要服务器回送响应，在请求结束后，会主动释放连接。从建立连接到关闭连接的过程称为“一次连接”。</p>
+<p>HTTPS是安全超文本传输协议，HTTP是应用层协议，TCP是传输层协议，在应用层和传输层之间，增加了一个安全套接层SSL/TLS：</p>
+<p>SSL (Secure Socket Layer，安全套接字层)</p>
+<p>TLS (Transport Layer Security，传输层安全协议)</p>
+<h1 id="2-http一次连接"><a href="#2-http一次连接" class="headerlink" title="2 http一次连接"></a>2 http一次连接</h1><ol>
+<li>DNS域名解析，找到连接的ip地址</li>
+<li>通过3次握手建立TCP连接</li>
+<li>向web服务器发送请求命令</li>
+<li>web服务器响应请求，返回相应数据</li>
+<li>浏览器得到数据，渲染页面呈现给用户</li>
+</ol>
+<h1 id="3-http状态码"><a href="#3-http状态码" class="headerlink" title="3 http状态码"></a>3 http状态码</h1><h2 id="1-1xx-信息"><a href="#1-1xx-信息" class="headerlink" title="1 1xx:信息"></a>1 1xx:信息</h2><p>100 Continue 服务器仅接收到部分请求，但是一旦服务器并没有拒绝该请求，客户端应该继续发送其余的请求。</p>
+<p>101 Switching Protocols 服务器转换协议：服务器将遵从客户的请求转换到另外一种协议。</p>
+<h2 id="2-2xx-成功"><a href="#2-2xx-成功" class="headerlink" title="2 2xx:成功"></a>2 2xx:成功</h2><p>200 OK 请求成功（其后是对GET和POST请求的应答文档。）</p>
+<p>201 Created 请求被创建完成，同时新的资源被创建。</p>
+<p>202 Accepted 供处理的请求已被接受，但是处理未完成。</p>
+<p>203 Non-authoritative Information 文档已经正常地返回，但一些应答头可能不正确，因为使用的是文档的拷贝。</p>
+<p>204 No Content 没有新文档。浏览器应该继续显示原来的文档。如果用户定期地刷新页面，而Servlet可以确定用户文档足够新，这个状态代码是很有用的。</p>
+<p>205 Reset Content 没有新文档。但浏览器应该重置它所显示的内容。用来强制浏览器清除表单输入内容。</p>
+<p>206 Partial Content 客户发送了一个带有Range头的GET请求，服务器完成了它。</p>
+<h2 id="3-3xx-重定向"><a href="#3-3xx-重定向" class="headerlink" title="3 3xx:重定向"></a>3 3xx:重定向</h2><p>300 Multiple Choices 多重选择。链接列表。用户可以选择某链接到达目的地。最多允许五个地址。</p>
+<p>301 Moved Permanently 所请求的页面已经转移至新的url。</p>
+<p>302 Found 所请求的页面已经临时转移至新的url。</p>
+<p>303 See Other 所请求的页面可在别的url下被找到。</p>
+<p>304 Not Modified 未按预期修改文档。客户端有缓冲的文档并发出了一个条件性的请求（一般是提供If-Modified-Since头表示客户只想比指定日期更新的文档）。服务器告诉客户，原来缓冲的文档还可以继续使用。</p>
+<p>305 Use Proxy 客户请求的文档应该通过Location头所指明的代理服务器提取。</p>
+<p>306 Unused 此代码被用于前一版本。目前已不再使用，但是代码依然被保留。</p>
+<p>307 Temporary Redirect 被请求的页面已经临时移至新的url。</p>
+<h2 id="4-4xx-客户端错误"><a href="#4-4xx-客户端错误" class="headerlink" title="4 4xx:客户端错误"></a>4 4xx:客户端错误</h2><p>400 Bad Request 服务器未能理解请求。</p>
+<p>401 Unauthorized 被请求的页面需要用户名和密码。</p>
+<p>402 Payment Required 此代码尚无法使用。</p>
+<p>403 Forbidden 对被请求页面的访问被禁止。</p>
+<p>404 Not Found 服务器无法找到被请求的页面。</p>
+<p>405 Method Not Allowed 请求中指定的方法不被允许。</p>
+<p>406 Not Acceptable 服务器生成的响应无法被客户端所接受。</p>
+<p>407 Proxy Authentication Required 用户必须首先使用代理服务器进行验证，这样请求才会被处理。</p>
+<p>408 Request Timeout 请求超出了服务器的等待时间。</p>
+<p>409 Conflict 由于冲突，请求无法被完成。</p>
+<p>410 Gone 被请求的页面不可用。</p>
+<p>411 Length Required “Content-Length” 未被定义。如果无此内<br>容，服务器不会接受请求。 </p>
+<p>412 Precondition Failed 请求中的前提条件被服务器评估为失败。</p>
+<p>413 Request Entity Too Large 由于所请求的实体的太大，服务器不会接受请求。</p>
+<p>414 Request-url Too Long 由于url太长，服务器不会接受请求。当post请求被转换为带有很长的查询信息的get请求时，就会发生这种情况。</p>
+<p>415 Unsupported Media Type 由于媒介类型不被支持，服务器不会接受请求。</p>
+<p>416 Requested Range Not Satisfiable 服务器不能满足客户在请求中指定的Range头。</p>
+<p>417 Expectation Failed 执行失败。</p>
+<p>423 锁定的错误。</p>
+<h2 id="5-5xx-服务器错误"><a href="#5-5xx-服务器错误" class="headerlink" title="5 5xx:服务器错误"></a>5 5xx:服务器错误</h2><p>500 Internal Server Error 请求未完成。服务器遇到不可预知的情况。</p>
+<p>501 Not Implemented 请求未完成。服务器不支持所请求的功能。</p>
+<p>502 Bad Gateway 请求未完成。服务器从上游服务器收到一个无效的响应。</p>
+<p>503 Service Unavailable 请求未完成。服务器临时过载或当机。</p>
+<p>504 Gateway Timeout 网关超时。</p>
+<p>505 HTTP Version Not Supported 服务器不支持请求中指明的HTTP协议版本。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/hswxBlog/tags/http/" rel="tag"># http</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/hswxBlog/2017/10/27/Node-js创建HTTP服务/" rel="next" title="Node.js创建HTTP服务">
+                <i class="fa fa-chevron-left"></i> Node.js创建HTTP服务
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/hswxBlog/2017/11/01/flex布局/" rel="prev" title="flex布局">
+                flex布局 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/hswxBlog/images/avatar.gif"
+                alt="寒山问雪" />
+            
+              <p class="site-author-name" itemprop="name">寒山问雪</p>
+              <p class="site-description motion-element" itemprop="description">html,css,javascript,angular,vue,react,node,各种前端水文</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/hswxBlog/archives/">
+              
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/hswxBlog/tags/index.html">
+                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-http与tcp、udp、https的关系"><span class="nav-number">1.</span> <span class="nav-text">1 http与tcp、udp、https的关系</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-http一次连接"><span class="nav-number">2.</span> <span class="nav-text">2 http一次连接</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-http状态码"><span class="nav-number">3.</span> <span class="nav-text">3 http状态码</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1xx-信息"><span class="nav-number">3.1.</span> <span class="nav-text">1 1xx:信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2xx-成功"><span class="nav-number">3.2.</span> <span class="nav-text">2 2xx:成功</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3xx-重定向"><span class="nav-number">3.3.</span> <span class="nav-text">3 3xx:重定向</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-4xx-客户端错误"><span class="nav-number">3.4.</span> <span class="nav-text">4 4xx:客户端错误</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-5xx-服务器错误"><span class="nav-number">3.5.</span> <span class="nav-text">5 5xx:服务器错误</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">寒山问雪 QQ: 597084762</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/hswxBlog/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/hswxBlog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/hswxBlog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/hswxBlog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/hswxBlog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/hswxBlog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/hswxBlog/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/hswxBlog/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/hswxBlog/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/hswxBlog/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/hswxBlog/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/hswxBlog/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/hswxBlog/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+<script src="/hswxBlog/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/hswxBlog/live2dw/assets/miku.model.json"},"display":{"superSample":2,"width":100,"height":200,"position":"left","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.3},"react":{"opacityDefault":0.8,"opacityOnHover":0.6}});</script></body>
+</html>

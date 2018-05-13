@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/hswxBlog/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/hswxBlog/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/hswxBlog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/hswxBlog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/hswxBlog/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/hswxBlog/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/hswxBlog/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/hswxBlog/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/hswxBlog/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="bodymovin,动效," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="你还在为各种复杂动画头疼么，设计师想出了一个非常炫酷的动效，可是对程序员来说是很痛苦的，就web前端来说可能要写一堆的css和js才能完成这个动效，写出来的可能还是个bug。 最近发现一个动画插件bodymovin(Lottie)。首先在AE上做好的动画并导出为json文件，通过bodymovin可以将json数据在web(bodymovin.js)/ios(lottie-ios)/安卓(lott">
+<meta name="keywords" content="bodymovin,动效">
+<meta property="og:type" content="article">
+<meta property="og:title" content="bodymovin(Lottie)插件编写跨平台复杂动效">
+<meta property="og:url" content="https://hswx.github.io/hswxBlog/2018/04/23/bodymovin插件编写复杂动效/index.html">
+<meta property="og:site_name" content="寒山问雪">
+<meta property="og:description" content="你还在为各种复杂动画头疼么，设计师想出了一个非常炫酷的动效，可是对程序员来说是很痛苦的，就web前端来说可能要写一堆的css和js才能完成这个动效，写出来的可能还是个bug。 最近发现一个动画插件bodymovin(Lottie)。首先在AE上做好的动画并导出为json文件，通过bodymovin可以将json数据在web(bodymovin.js)/ios(lottie-ios)/安卓(lott">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://hswx.github.io/hswxBlog/images/bodymovin.gif">
+<meta property="og:updated_time" content="2018-05-13T13:25:41.428Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="bodymovin(Lottie)插件编写跨平台复杂动效">
+<meta name="twitter:description" content="你还在为各种复杂动画头疼么，设计师想出了一个非常炫酷的动效，可是对程序员来说是很痛苦的，就web前端来说可能要写一堆的css和js才能完成这个动效，写出来的可能还是个bug。 最近发现一个动画插件bodymovin(Lottie)。首先在AE上做好的动画并导出为json文件，通过bodymovin可以将json数据在web(bodymovin.js)/ios(lottie-ios)/安卓(lott">
+<meta name="twitter:image" content="https://hswx.github.io/hswxBlog/images/bodymovin.gif">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/hswxBlog/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '寒山问雪'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hswx.github.io/hswxBlog/2018/04/23/bodymovin插件编写复杂动效/"/>
+
+
+
+
+
+  <title>bodymovin(Lottie)插件编写跨平台复杂动效 | 寒山问雪</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/hswxBlog/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">寒山问雪</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/hswxBlog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/hswxBlog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/hswxBlog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://hswx.github.io/hswxBlog/hswxBlog/2018/04/23/bodymovin插件编写复杂动效/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="寒山问雪">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/hswxBlog/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="寒山问雪">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">bodymovin(Lottie)插件编写跨平台复杂动效</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-23T22:30:49+08:00">
+                2018-04-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,255
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  5
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>你还在为各种复杂动画头疼么，设计师想出了一个非常炫酷的动效，可是对程序员来说是很痛苦的，就web前端来说可能要写一堆的css和js才能完成这个动效，写出来的可能还是个bug。</p>
+<p>最近发现一个动画插件bodymovin(Lottie)。首先在AE上做好的动画并导出为json文件，通过bodymovin可以将json数据在web(<a href="https://github.com/airbnb/lottie-web" target="_blank" rel="noopener">bodymovin.js</a>)/ios(<a href="https://github.com/airbnb/lottie-ios" target="_blank" rel="noopener">lottie-ios</a>)/安卓(<a href="https://github.com/airbnb/lottie-android" target="_blank" rel="noopener">lottie-android</a>)上渲染出AE中做好的动画，实现跨平台三端通用，支持渲染成svg/canvas/html三种格式。甚至对我们前端来说，有专门用于react框架的插件lottie-react-native。</p>
+<p>bodymovin最后给出的就是如下的一串json文件，在动画生成实际的json文件之后，可以自行更改。这里展示的是资源是图片的情况下生成的json文件</p>
+<pre><code>{
+    &quot;v&quot;: &quot;4.6.9&quot;, // bodymovin版本号
+    &quot;fr&quot;: 25,
+    &quot;ip&quot;: 0,
+    &quot;op&quot;: 125,
+    &quot;w&quot;: 984, // 动画宽度
+    &quot;h&quot;: 560, // 动画高度
+    &quot;nm&quot;: &quot;anim&quot;, // 动画名称
+    &quot;ddd&quot;: 0,
+    &quot;assets&quot;: [ // 静态资源数组
+      {
+        &quot;id&quot;: &quot;image_0&quot;, // 静态资源id
+        &quot;w&quot;: 168, // 静态资源宽度
+        &quot;h&quot;: 194, // 静态资源高度
+        &quot;u&quot;: &quot;images/&quot;, // 静态资源所在目录
+        &quot;p&quot;: &quot;img_0.png&quot; // 静态资源文件名
+      }
+      ...
+    ]
+    &quot;layers&quot;:[ ... ] // 动画数据
+</code></pre><p>关于AE生成json文件的方法，这里不做赘述，那是设计师的事儿，感兴趣的可以看<a href="https://github.com/airbnb/lottie-web#plugin-installation" target="_blank" rel="noopener">官方教程</a>，还有中文版<a href="https://www.cnblogs.com/zamhown/p/6688369.html" target="_blank" rel="noopener">教程1</a>，<a href="https://github.com/bigxixi/bodymovin#%E5%AE%89%E8%A3%85%E6%96%B9%E5%BC%8F1%E6%8E%A8%E8%8D%90" target="_blank" rel="noopener">教程2</a></p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>从github中build/player/目录下获取最新版本<a href="https://github.com/airbnb/lottie-web/tree/master/build/player" target="_blank" rel="noopener">lottie.js文件</a>。当然，也可以使用npm或者bower等工具进行下载</p>
+<pre><code>npm install lottie-web
+</code></pre><p>或</p>
+<pre><code>bower install lottie-web
+</code></pre><h2 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h2><p>可以直接通过script标签引入js文件  </p>
+<pre><code>&lt;script src=&quot;js/lottie.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+</code></pre><p>当然，从lottie的源码来看，也是可以通过import等模块化引入方式进行引入的。源码中还有一点，在全局引入的方式中，将全局变量lottie赋值给了bodymovin，因此全局既可以用lottie，也可以用bodymovin。原本插件叫bodymovin，后来改成了lottie。</p>
+<pre><code>(typeof navigator !== &quot;undefined&quot;) &amp;&amp; (function(root, factory) {
+    if (typeof define === &quot;function&quot; &amp;&amp; define.amd) {
+        define(function() {
+            return factory(root);
+        });
+    } else if (typeof module === &quot;object&quot; &amp;&amp; module.exports) {
+        module.exports = factory(root);
+    } else {
+        root.lottie = factory(root);
+        root.bodymovin = root.lottie;
+    }
+}((window || {}), function(window) {
+</code></pre><p><img src="/hswxBlog/images/bodymovin.gif" alt="bodymovin"></p>
+<h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><pre><code>let animationInstance = bodymovin.loadAnimation(options)
+</code></pre><p><span id="options">options</span>对象可以放入以下参数：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th style="text-align:center">类型</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td style="text-align:center">String</td>
+<td>动画名称，用于后续的使用</td>
+</tr>
+<tr>
+<td>container</td>
+<td style="text-align:center">Object</td>
+<td>渲染动画的dom元素对象</td>
+</tr>
+<tr>
+<td>renderer</td>
+<td style="text-align:center">String</td>
+<td>动画的渲染方式，可以是svg/html/canvas</td>
+</tr>
+<tr>
+<td>loop</td>
+<td style="text-align:center">Boolean/Integer</td>
+<td>循环播放的次数，可以是false（不循环）/true（无限循环）/n（n为正整数，表示循环n次）</td>
+</tr>
+<tr>
+<td>autoplay</td>
+<td style="text-align:center">Boolean</td>
+<td>加载完是否自动播放</td>
+</tr>
+<tr>
+<td>animationData</td>
+<td style="text-align:center">Object</td>
+<td>动画数据对象（该属性与path只能用其中一个）</td>
+</tr>
+<tr>
+<td>path</td>
+<td style="text-align:center">String</td>
+<td>动画数据文件的相对路径，使用该属性的时候，需要在服务器环境运行，推荐使用http-server</td>
+</tr>
+</tbody>
+</table>
+<p>demo示例请点击<a href="https://github.com/hswx/demo/tree/master/bodymovin%E7%A4%BA%E4%BE%8B" target="_blank" rel="noopener">此处</a>下载</p>
+<h2 id="实例方法"><a href="#实例方法" class="headerlink" title="实例方法"></a>实例方法</h2><p>初始化之后会得到一个动画实例 animationInstance ，该实例可以使用以下方法：</p>
+<p>play() // 播放动画。<br>stop() // 停止动画（下次播放从头开始）。<br>pause() // 暂停动画（下次播放从当前暂停处开始）。<br>setSpeed(speed) // 设置动画播放的速度，1为正常速度。<br>goToAndStop(value, isFrame) // 跳转到某一时间（或帧）后暂停。value表示跳转到的点，类型是数值。isFrame类型为Boolean，true表示跳转到某帧，false表示跳转到某个时间。<br>goToAndPlay(value, isFrame) // 跳转到某一时间（或帧）后播放。参数同上。<br>setDirection(direction) // 播放的矢量方向，&gt;=0表示正向播放，&lt;0表示倒序播放。<br>playSegments(segments, forceFlag) // 播放某一段。segments类型是数组，形式为[(a,b),(c,d),(e,f)…]，表示播放第a帧到b帧，然后第c帧到d帧，依此类推。forceFlag为第二个参数为Boolean类型，表示是否立即播放本段动画还是等待当前动画播放完毕。<br>destroy() // 销毁动画实例。</p>
+<h2 id="全局方法"><a href="#全局方法" class="headerlink" title="全局方法"></a>全局方法</h2><p>bodymovin对象也有以下几个方法可以使用：</p>
+<p>bodymovin.play(name) // 播放name名称的动画。<br>bodymovin.stop(name) // 停止name名称的动画。<br>bodymovin.setSpeed(speed, name) // 设置名称为name的动画的速度，name可不填，1为正常速度。<br>bodymovin.setDirection(direction， name) // 称为name的动画播放的矢量方向，name可不填，&gt;=0表示正向播放，&lt;0表示倒序播放。<br>bodymovin.searchAnimations() // 查找class值为”bodymovin”的dom元素。<br>bodymovin.loadAnimation() // 初始化一个动画实例。参数见<a href="#options">用法</a>。<br>bodymovin.destroy() // 销毁所有动画实例<br>bodymovin.registerAnimation() // 注册一个自定义元素，它必须包含”data-animation-path”属性并指向data.json的地址。<br>bodymovin.setQuality() // 画质设置，默认为高画质(high), 可选值为’high’、’medium’、’low’, 或者大于1的数字。对于有的动画这些设置差别不大。</p>
+<h2 id="事件监听"><a href="#事件监听" class="headerlink" title="事件监听"></a>事件监听</h2><p>bodymovin可以监听以下事件，或者可以直接用addEventListener监听事件(complete/loopComplete/enterFrame/segmentStart)：</p>
+<p>onComplete // 动画播放完成<br>onLoopComplete // 每个动画循环播放完成<br>onEnterFrame // 进入某一帧前触发<br>onSegmentStart // 某个播放片段开始前触发</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/hswxBlog/tags/bodymovin/" rel="tag"># bodymovin</a>
+          
+            <a href="/hswxBlog/tags/动效/" rel="tag"># 动效</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/hswxBlog/2017/11/27/浅拷贝和深拷贝/" rel="next" title="浅拷贝和深拷贝">
+                <i class="fa fa-chevron-left"></i> 浅拷贝和深拷贝
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/hswxBlog/2018/05/13/vue-cli中webpack配置解析/" rel="prev" title="vue-cli中webpack配置解析">
+                vue-cli中webpack配置解析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/hswxBlog/images/avatar.gif"
+                alt="寒山问雪" />
+            
+              <p class="site-author-name" itemprop="name">寒山问雪</p>
+              <p class="site-description motion-element" itemprop="description">html,css,javascript,angular,vue,react,node,各种前端水文</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/hswxBlog/archives/">
+              
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/hswxBlog/tags/index.html">
+                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#引入"><span class="nav-number">2.</span> <span class="nav-text">引入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#初始化"><span class="nav-number">3.</span> <span class="nav-text">初始化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实例方法"><span class="nav-number">4.</span> <span class="nav-text">实例方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#全局方法"><span class="nav-number">5.</span> <span class="nav-text">全局方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事件监听"><span class="nav-number">6.</span> <span class="nav-text">事件监听</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">寒山问雪 QQ: 597084762</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/hswxBlog/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/hswxBlog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/hswxBlog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/hswxBlog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/hswxBlog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/hswxBlog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/hswxBlog/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/hswxBlog/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/hswxBlog/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/hswxBlog/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/hswxBlog/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/hswxBlog/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/hswxBlog/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+<script src="/hswxBlog/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/hswxBlog/live2dw/assets/miku.model.json"},"display":{"superSample":2,"width":100,"height":200,"position":"left","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.3},"react":{"opacityDefault":0.8,"opacityOnHover":0.6}});</script></body>
+</html>
