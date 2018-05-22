@@ -249,6 +249,207 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://hswx.github.io/hswxBlog/hswxBlog/2018/05/22/前端几种场景下图片转base64的方法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="寒山问雪">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/hswxBlog/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="寒山问雪">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/hswxBlog/2018/05/22/前端几种场景下图片转base64的方法/" itemprop="url">前端几种场景下图片转base64的方法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-22T23:34:17+08:00">
+                2018-05-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  406
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  2
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="1-node服务器环境"><a href="#1-node服务器环境" class="headerlink" title="1. node服务器环境"></a>1. node服务器环境</h1><p>node可以通过fs文件操作模块直接操作图片文件，将文件读取成buffer流，然后再通过toString方法，把文件转成dataUrl。</p>
+<pre><code>let fs = require(&apos;fs&apos;)
+let imageBuf = fs.readFileSync(&apos;./../testImg.jpg&apos;)
+console.log(&apos;data:image/jpeg;base64,&apos;+imageBuf.toString(&apos;base64&apos;))
+</code></pre><h1 id="2-前端文件上传场景"><a href="#2-前端文件上传场景" class="headerlink" title="2. 前端文件上传场景"></a>2. 前端文件上传场景</h1><p>在前端上传文件的场景中，我们可以通过上传控件拿到文件的File对象，再通过FileReader对象的readAsDataURL方法，可以直接在文件上传完毕之后得到文件的dataUrl。</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;input type=&quot;file&quot; id=&quot;file&quot;&gt;
+&lt;button onclick=&quot;upload()&quot;&gt;upload&lt;/button&gt;
+&lt;script&gt;
+    function upload() {
+        let fileReader = new FileReader()
+        let file = document.getElementById(&apos;file&apos;).files[0]
+        if(file) {
+            fileReader.readAsDataURL(file)
+            fileReader.onload = function (e) {
+                console.log(fileReader.result)
+            }
+        }
+    }
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><h1 id="3-通过canvas绘制图片后转base64"><a href="#3-通过canvas绘制图片后转base64" class="headerlink" title="3. 通过canvas绘制图片后转base64"></a>3. 通过canvas绘制图片后转base64</h1><p>canvas元素有个方法toDataURL(type, encoderOptions)可以将canvas元素转换成base64的图片dataUrl，type用于指定图片的格式(image/jpeg)。这样我们就可以先把图片绘制在canvas中，再把绘制好的canvas转换成dataUrl。这种场景也适用于网络资源中的图片，可以先加载网络上的图片绘制在canvas中然后转换成base64(注：canvas绘制图片时使用的图片不能跨域，需要设置图片对象image.crossOrigin = “Anonymous”)。</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html &gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script&gt;
+    let image = new Image()
+    image.src = &apos;./../testImg.jpg&apos;
+    image.onload = function() {
+        image.crossOrigin = &quot;Anonymous&quot; // 解决canvas绘制图片时跨域的问题，canvas引用的图片不能跨域
+        let canvas = document.createElement(&apos;canvas&apos;)
+        canvas.width = image.width
+        canvas.height = image.height
+        let ctx = canvas.getContext(&apos;2d&apos;)
+        ctx.drawImage(image, 0, 0, image.width, image.height)
+        let uri = canvas.toDataURL(&apos;image/jpeg&apos;)
+        console.log(uri)
+    }
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><p><a href="https://github.com/hswx/demo/tree/master/%E5%9B%BE%E7%89%87%E6%88%96%E8%80%85%E6%96%87%E4%BB%B6%E4%BC%A0base64%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F" target="_blank" rel="noopener">demo地址</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://hswx.github.io/hswxBlog/hswxBlog/2018/05/13/vue-cli中webpack配置解析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1876,198 +2077,6 @@ function kuaisu(array,left,right) {
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://hswx.github.io/hswxBlog/hswxBlog/2017/11/02/冒泡排序/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="寒山问雪">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/hswxBlog/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="寒山问雪">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/hswxBlog/2017/11/02/冒泡排序/" itemprop="url">冒泡排序</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-02T16:10:37+08:00">
-                2017-11-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  402
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  2
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="1-算法原理"><a href="#1-算法原理" class="headerlink" title="1 算法原理"></a>1 算法原理</h1><p>冒泡排序算法的运作如下：（从后往前）</p>
-<ol>
-<li><p>比较相邻的元素。如果第一个比第二个大，就交换他们两个。</p>
-</li>
-<li><p>对每一对相邻元素作同样的工作，从开始第一对到结尾的最后一对。在这一点，最后的元素应该会是最大的数。</p>
-</li>
-<li><p>针对所有的元素重复以上的步骤，除了最后一个。</p>
-</li>
-<li><p>持续每次对越来越少的元素重复上面的步骤，直到没有任何一对数字需要比较。</p>
-</li>
-</ol>
-<h1 id="2-算法分析"><a href="#2-算法分析" class="headerlink" title="2 算法分析"></a>2 算法分析</h1><p>时间复杂度：O( n^2 )，冒泡排序就是把小的元素往前调或者把大的元素往后调，相同的元素是不会交换的，因此冒泡排序是一种稳定排序算法。</p>
-<h1 id="3-算法实现"><a href="#3-算法实现" class="headerlink" title="3 算法实现"></a>3 算法实现</h1><pre><code>function maopao(array) {
-    for(let i=0;i&lt;array.length-1;i++){
-        for(let j=0;j&lt;array.length-i-1;j++){
-            if(array[j]&gt;array[j+1]){
-                let tmp=array[j];
-                array[j]=array[j+1];
-                array[j+1]=tmp;
-            }
-            console.log(array);
-        }
-    }
-}
-</code></pre><p>对冒泡排序常见的改进方法是加入一标志性变量比如index，用于标志某一趟排序过程中是否有数据交换，如果进行某一趟排序时并没有进行数据交换，则说明数据已经按要求排列好，可立即结束排序，避免不必要的比较过程。</p>
-<pre><code>function m(array) {
-    for(let i=0;i&lt;array.length-1;i++){
-        let index=true;
-        for(let j=0;j&lt;array.length-i-1;j++){
-            if(array[j]&gt;array[j+1]){
-                index=false;
-                let tmp=array[j];
-                array[j]=array[j+1];
-                array[j+1]=tmp;
-            }
-            console.log(array);
-        }
-        if(index){
-            break;
-        }
-    }
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2122,7 +2131,7 @@ function kuaisu(array,left,right) {
               
                 <a href="/hswxBlog/archives/">
               
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2135,7 +2144,7 @@ function kuaisu(array,left,right) {
               
               <div class="site-state-item site-state-tags">
                 <a href="/hswxBlog/tags/index.html">
-                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[前端几种场景下图片转base64的方法]]></title>
+    <url>%2FhswxBlog%2F2018%2F05%2F22%2F%E5%89%8D%E7%AB%AF%E5%87%A0%E7%A7%8D%E5%9C%BA%E6%99%AF%E4%B8%8B%E5%9B%BE%E7%89%87%E8%BD%ACbase64%E7%9A%84%E6%96%B9%E6%B3%95%2F</url>
+    <content type="text"><![CDATA[1. node服务器环境node可以通过fs文件操作模块直接操作图片文件，将文件读取成buffer流，然后再通过toString方法，把文件转成dataUrl。 let fs = require(&apos;fs&apos;) let imageBuf = fs.readFileSync(&apos;./../testImg.jpg&apos;) console.log(&apos;data:image/jpeg;base64,&apos;+imageBuf.toString(&apos;base64&apos;)) 2. 前端文件上传场景在前端上传文件的场景中，我们可以通过上传控件拿到文件的File对象，再通过FileReader对象的readAsDataURL方法，可以直接在文件上传完毕之后得到文件的dataUrl。 &lt;!DOCTYPE html&gt; &lt;html&gt; &lt;head&gt; &lt;meta charset=&quot;UTF-8&quot;&gt; &lt;/head&gt; &lt;body&gt; &lt;input type=&quot;file&quot; id=&quot;file&quot;&gt; &lt;button onclick=&quot;upload()&quot;&gt;upload&lt;/button&gt; &lt;script&gt; function upload() { let fileReader = new FileReader() let file = document.getElementById(&apos;file&apos;).files[0] if(file) { fileReader.readAsDataURL(file) fileReader.onload = function (e) { console.log(fileReader.result) } } } &lt;/script&gt; &lt;/body&gt; &lt;/html&gt; 3. 通过canvas绘制图片后转base64canvas元素有个方法toDataURL(type, encoderOptions)可以将canvas元素转换成base64的图片dataUrl，type用于指定图片的格式(image/jpeg)。这样我们就可以先把图片绘制在canvas中，再把绘制好的canvas转换成dataUrl。这种场景也适用于网络资源中的图片，可以先加载网络上的图片绘制在canvas中然后转换成base64(注：canvas绘制图片时使用的图片不能跨域，需要设置图片对象image.crossOrigin = “Anonymous”)。 &lt;!DOCTYPE html&gt; &lt;html &gt; &lt;head&gt; &lt;meta charset=&quot;UTF-8&quot;&gt; &lt;/head&gt; &lt;body&gt; &lt;script&gt; let image = new Image() image.src = &apos;./../testImg.jpg&apos; image.onload = function() { image.crossOrigin = &quot;Anonymous&quot; // 解决canvas绘制图片时跨域的问题，canvas引用的图片不能跨域 let canvas = document.createElement(&apos;canvas&apos;) canvas.width = image.width canvas.height = image.height let ctx = canvas.getContext(&apos;2d&apos;) ctx.drawImage(image, 0, 0, image.width, image.height) let uri = canvas.toDataURL(&apos;image/jpeg&apos;) console.log(uri) } &lt;/script&gt; &lt;/body&gt; &lt;/html&gt; demo地址]]></content>
+      <tags>
+        <tag>base64</tag>
+        <tag>node</tag>
+        <tag>canvas</tag>
+        <tag>file</tag>
+        <tag>图片</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[vue-cli中webpack配置解析]]></title>
     <url>%2FhswxBlog%2F2018%2F05%2F13%2Fvue-cli%E4%B8%ADwebpack%E9%85%8D%E7%BD%AE%E8%A7%A3%E6%9E%90%2F</url>
     <content type="text"></content>
@@ -91,8 +103,8 @@
     <url>%2FhswxBlog%2F2017%2F11%2F02%2F%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F%2F</url>
     <content type="text"><![CDATA[1 算法原理冒泡排序算法的运作如下：（从后往前） 比较相邻的元素。如果第一个比第二个大，就交换他们两个。 对每一对相邻元素作同样的工作，从开始第一对到结尾的最后一对。在这一点，最后的元素应该会是最大的数。 针对所有的元素重复以上的步骤，除了最后一个。 持续每次对越来越少的元素重复上面的步骤，直到没有任何一对数字需要比较。 2 算法分析时间复杂度：O( n^2 )，冒泡排序就是把小的元素往前调或者把大的元素往后调，相同的元素是不会交换的，因此冒泡排序是一种稳定排序算法。 3 算法实现function maopao(array) { for(let i=0;i&lt;array.length-1;i++){ for(let j=0;j&lt;array.length-i-1;j++){ if(array[j]&gt;array[j+1]){ let tmp=array[j]; array[j]=array[j+1]; array[j+1]=tmp; } console.log(array); } } } 对冒泡排序常见的改进方法是加入一标志性变量比如index，用于标志某一趟排序过程中是否有数据交换，如果进行某一趟排序时并没有进行数据交换，则说明数据已经按要求排列好，可立即结束排序，避免不必要的比较过程。 function m(array) { for(let i=0;i&lt;array.length-1;i++){ let index=true; for(let j=0;j&lt;array.length-i-1;j++){ if(array[j]&gt;array[j+1]){ index=false; let tmp=array[j]; array[j]=array[j+1]; array[j+1]=tmp; } console.log(array); } if(index){ break; } } }]]></content>
       <tags>
-        <tag>排序算法</tag>
         <tag>冒泡排序</tag>
+        <tag>排序算法</tag>
       </tags>
   </entry>
   <entry>
